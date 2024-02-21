@@ -30,6 +30,12 @@ def users():
     response = make_response(users, 200)
     return response
 
+@app.route('/users/<int:id>')
+def user(id):
+    user = User.query.filter_by(id=id).first()
+    response = user.to_dict(), 200
+    return response
+
 @app.route('/employees')
 def employees():
 
@@ -52,6 +58,16 @@ def companies():
     response = make_response(companies, 200)
     return response
 
+@app.route('/connections')
+def connections():
+
+    connections = []
+    for c in Connection.query.all():
+        c_dict = c.to_dict()
+        connections.append(c_dict)
+    
+    response = make_response(connections, 200)
+    return response
 
 
 if __name__ == '__main__':

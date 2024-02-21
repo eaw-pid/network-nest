@@ -37,12 +37,15 @@ if __name__ == "__main__":
     #Create employees
         jenny = Employee(name="Jenny", email="jenny@oracle.com", website="linkedin.com/in/jenny", contacted=True, company_id=2)
         tom = Employee(name="Tom", email="tom@oracle.com", website="linkedin.com/in/tom", contacted=True, company_id=2)
-        db.session.add_all([jenny, tom])
+        greg = Employee(name="Greg", email="greg@apple.com", website="linkedin.com/in/greg", contacted=True, company_id=1)
+        db.session.add_all([jenny, tom, greg])
         db.session.commit()
 
     #Create Connections
         c1 = Connection(user_id=1, employee_id=1, action="Email", notes="Sent email")
-        db.session.add(c1)
+        c2 = Connection(user_id=2, employee_id=1, action="Phone Call", notes="Scheduled phone call")
+        c3 = Connection(user_id=1, employee_id=2, action="Email", notes="Sent email")
+        db.session.add_all([c1,c2,c3])
         db.session.commit()
 
        

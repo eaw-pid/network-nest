@@ -13,16 +13,18 @@ from config import db
 
 ##add validations, including password_hash validations and bcrypt
 
-# connections = db.Table(
-#     'connections',
-#     metadata,
-#     db.Column('user_id', db.Integer, db.ForeignKey('users.id'), primary_key=True)
-#     db.Column('connection_id', db.Integer, db.ForeignKey('connections.id'), primary_key=True)
-# )
+
 class User(db.Model, SerializerMixin):
     __tablename__ = "users"
 
-    serialize_rules = ('-connections',)
+    serialize_rules = ('-connections.user',
+                       '-connections.employee.company',
+                       '-connections.employee.connections',
+                       '-connections.employee.contacted',
+                       '-connections.employee.email',
+                       '-connections.employee_id',
+                       '-connections.user_id',)
+
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, nullable=False, unique=True)
@@ -40,7 +42,12 @@ class User(db.Model, SerializerMixin):
 class Company(db.Model, SerializerMixin):
     __tablename__ = "companies"
 
-    serialize_rules = ('-employees',)
+    serialize_rules = ('-employees.company', 
+                       '-employees.company_id', 
+                       '-employees.connections',
+                       '-employees.website',
+                       '-employees.contacted',
+                       '-employees.email',)
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
@@ -56,7 +63,7 @@ class Company(db.Model, SerializerMixin):
 class Employee(db.Model, SerializerMixin):
     __tablename__ = "employees"
 
-    serialize_rules = ('-company', '-connections',)
+    serialize_rules = ('-company.employees',)
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
@@ -76,7 +83,16 @@ class Employee(db.Model, SerializerMixin):
 class Connection(db.Model, SerializerMixin):
     __tablename__ = 'connections'
 
-    serialize_rules = ('-user', '-employee',)
+    serialize_rules = ('-user.connections',
+                       '-user.first_name',
+                       '-user.last_name', 
+                       '-user.email'
+                       '-employee_id',
+                       '-user_id',
+                       '-employee.connections',
+                       '-employee.company',
+                       '-employee.company_id',
+                       '-employee.website',)
     
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
