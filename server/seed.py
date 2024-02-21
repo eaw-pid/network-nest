@@ -18,10 +18,14 @@ if __name__ == "__main__":
         db.session.query(Employee).delete()
         db.session.query(Connection).delete()
 
+        # fake = Faker
     #Create users
-        user1 = User(username = "Tester", first_name = "Bill", last_name = "Murray", email = "tester123@gmail.com")
-
-        db.session.add(user1)
+        
+        user1 = User(username = "BMurph", first_name = "Bill", last_name = "Murray", email = "tester123@gmail.com")
+        user2 = User(username = "VCall", first_name = "Vincent", last_name = "Callahan", email = "vcallahan@gmail.com")
+        user3  = User(username = "JBeck", first_name = "John", last_name = "Beck", email = "jbeck@gmail.com")
+        user4 = User(username = "CStark", first_name = "Carmine", last_name = "Stark", email = "cstark@gmail.com")
+        db.session.add_all([user1, user2, user3, user4])
         db.session.commit()
     
     #Create companies
@@ -42,7 +46,6 @@ if __name__ == "__main__":
         db.session.commit()
 
        
-# fake = Faker
 
 # def make_users():
 #     User.query.delete()
