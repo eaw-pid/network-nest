@@ -8,7 +8,7 @@ from faker import Faker
 
 # Local imports
 from config import app, db
-from models import User, Company, Employee
+from models import User, Company, Employee, Connection
 
 if __name__ == "__main__":
     with app.app_context():
@@ -31,10 +31,14 @@ if __name__ == "__main__":
     
     #Create employees
         jenny = Employee(name="Jenny", email="jenny@oracle.com", website="linkedin.com/in/jenny", contacted=True, company_id=2)
-        
-        db.session.add(jenny)
+        tom = Employee(name="Tom", email="tom@oracle.com", website="linkedin.com/in/tom", contacted=True, company_id=2)
+        db.session.add_all([jenny, tom])
         db.session.commit()
 
+    #Create Connections
+        c1 = Connection(user_id=1, employee_id=1, action="Email", notes="Sent email")
+        db.session.add(c1)
+        db.session.commit()
 # fake = Faker
 
 # def make_users():

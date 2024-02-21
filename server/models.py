@@ -5,8 +5,20 @@ from sqlalchemy.orm import validates
 from config import db
 
 # Models go here!
+##A User has many Connections
+##A Connection belongs to a User
+##Connections can belong to many Users
+##A Company has many Employees
+##An Employee belongs to a Company
 
+##add validations, including password_hash validations and bcrypt
 
+# connections = db.Table(
+#     'connections',
+#     metadata,
+#     db.Column('user_id', db.Integer, db.ForeignKey('users.id'), primary_key=True)
+#     db.Column('connection_id', db.Integer, db.ForeignKey('connections.id'), primary_key=True)
+# )
 class User(db.Model, SerializerMixin):
     __tablename__ = "users"
 
@@ -16,6 +28,8 @@ class User(db.Model, SerializerMixin):
     last_name = db.Column(db.String, nullable=False)
     email = db.Column(db.String, nullable=False)
     # _password_hash = db.Column(db.String, nullable=False)
+
+
 
     def __repr__(self):
         return f'<{self.name}>'
@@ -51,5 +65,20 @@ class Employee(db.Model, SerializerMixin):
 
     def __repr__(self):
         return f'<{self.name}>'
-##add validations, including password_hash validations and bcrypt
 
+class Connection(db.Model, SerializerMixin):
+    __tablename__ = 'connections'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    employee_id = db.Column(db.Integer, db.ForeignKey('employees.id'))
+    connection_date = db.Column(db.DateTime, server_default=db.func.now())
+    action = db.Column(db.String, nullable=False)
+    notes = db.Column(db.String)
+
+
+    # @validates("email")
+    # def check_email(self, key, email):
+    #     if '@' not in email:
+    #         raise ValueError("Invalid email format.Email must contain '@' symbol.")
+    #     return email
