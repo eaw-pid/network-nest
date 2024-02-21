@@ -22,6 +22,8 @@ from config import db
 class User(db.Model, SerializerMixin):
     __tablename__ = "users"
 
+    serialize_rules = ('-connections',)
+
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, nullable=False, unique=True)
     first_name = db.Column(db.String, nullable=False)
@@ -29,14 +31,16 @@ class User(db.Model, SerializerMixin):
     email = db.Column(db.String, nullable=False)
     # _password_hash = db.Column(db.String, nullable=False)
 
-
+    connections = db.relationship('Connection', back_populates='user')
 
     def __repr__(self):
-        return f'<{self.name}>'
+        return f'<{self.username}>'
 
 
 class Company(db.Model, SerializerMixin):
     __tablename__ = "companies"
+
+    serialize_rules = ('-employees',)
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
@@ -52,6 +56,8 @@ class Company(db.Model, SerializerMixin):
 class Employee(db.Model, SerializerMixin):
     __tablename__ = "employees"
 
+    serialize_rules = ('-company', '-connections',)
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     email = db.Column(db.String, nullable=False)
@@ -62,12 +68,15 @@ class Employee(db.Model, SerializerMixin):
 
     #relationship mapping to review the related company:
     company = db.relationship('Company', back_populates="employees")
-
+    connections = db.relationship('Connection', back_populates='employee')
+    
     def __repr__(self):
         return f'<{self.name}>'
 
 class Connection(db.Model, SerializerMixin):
     __tablename__ = 'connections'
+
+    serialize_rules = ('-user', '-employee',)
     
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
@@ -76,7 +85,11 @@ class Connection(db.Model, SerializerMixin):
     action = db.Column(db.String, nullable=False)
     notes = db.Column(db.String)
 
+    user = db.relationship('User', back_populates='connections')
+    employee = db.relationship('Employee', back_populates='connections')
 
+    def __repr__(self):
+        return f'<User ID: {self.user_id}, Employee ID: {self.employee_id}>'
     # @validates("email")
     # def check_email(self, key, email):
     #     if '@' not in email:

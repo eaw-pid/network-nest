@@ -15,7 +15,8 @@ if __name__ == "__main__":
         ##Clear Existing Data
         db.session.query(User).delete()
         db.session.query(Company).delete()
-        db.session.query(Employee).delete
+        db.session.query(Employee).delete()
+        db.session.query(Connection).delete()
 
     #Create users
         user1 = User(username = "Tester", first_name = "Bill", last_name = "Murray", email = "tester123@gmail.com")
@@ -39,6 +40,8 @@ if __name__ == "__main__":
         c1 = Connection(user_id=1, employee_id=1, action="Email", notes="Sent email")
         db.session.add(c1)
         db.session.commit()
+
+       
 # fake = Faker
 
 # def make_users():
