@@ -22,7 +22,7 @@ function NavBar() {
                     <Nav.Link as={NavLink} to="/" className={styles.navLink}>Home</Nav.Link>  
                     <Nav.Link as={NavLink} to="/login" className={styles.navLink}>Login</Nav.Link>  
                 </Nav>
-                    <Button as={NavLink} to="/signup" bsStyle="primary">Signup</Button>
+                    <Button as={NavLink} to="/signup" bsstyle="primary">Signup</Button>
                 </Navbar.Collapse>
             </Container>
         </Navbar>

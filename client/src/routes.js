@@ -2,6 +2,7 @@ import App from "./pages/App"
 import Home from "./pages/Home"
 import Login from "./pages/Login"
 import Signup from "./pages/Signup"
+import MyConnects from "./pages/MyConnects"
 
 const routes = [
     {
@@ -19,6 +20,10 @@ const routes = [
             {
             path: "/signup",
             element: <Signup />,
+            },
+            {
+            path: "/my-connections",
+            element: <MyConnects />,
             },
         ]
     }

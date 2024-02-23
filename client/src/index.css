@@ -43,3 +43,10 @@ label {
   font-weight: 600;
   color: rgb(34, 34, 34);
 }
+
+.connection-header {
+  text-align: center;
+  margin-top: 2em;
+  padding-bottom: 2%
+}
+
