@@ -9,7 +9,7 @@ function Login() {
         <Form className="Auth-form">
         <div className="Auth-form-content">
         <Form.Label className="Auth-form-title">Sign In</Form.Label>
-        <Form.Group className="mb-3" controlId="formGroupEmail">
+        <Form.Group className="mb-3" controlId="formGroupUsername">
           <Form.Label>Username</Form.Label>
           <Form.Control type="email" placeholder="Enter Username" />
         </Form.Group>
