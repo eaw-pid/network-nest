@@ -2,17 +2,18 @@ import React from 'react'
 
 function ConnectTable() {
     return (
-        <div>
-            <table class="table table-bordered">
+        <div className="connect-table">
+            {/* <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Handle</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Date Contacted</th>
+                    <th scope="col">Connection Type</th>
+                    <th scope="col">Notes</th>
                 </tr>
             </thead>
-            </table>
+            </table> */}
         </div>
     )
 }

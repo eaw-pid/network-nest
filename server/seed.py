@@ -17,7 +17,7 @@ if __name__ == "__main__":
         db.session.query(Company).delete()
         db.session.query(Employee).delete()
         db.session.query(Connection).delete()
-
+        db.session.commit()
         # fake = Faker
     #Create users
         
@@ -25,6 +25,10 @@ if __name__ == "__main__":
         user2 = User(username = "VCall", first_name = "Vincent", last_name = "Callahan", email = "vcallahan@gmail.com")
         user3  = User(username = "JBeck", first_name = "John", last_name = "Beck", email = "jbeck@gmail.com")
         user4 = User(username = "CStark", first_name = "Carmine", last_name = "Stark", email = "cstark@gmail.com")
+        user1.password_hash = "Pass1"
+        user2.password_hash = "Pass2"
+        user3.password_hash = "Pass3"
+        user4.password_hash = "Pass4"
         db.session.add_all([user1, user2, user3, user4])
         db.session.commit()
     

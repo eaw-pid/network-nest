@@ -18,7 +18,7 @@ class User(db.Model, SerializerMixin):
     __tablename__ = "users"
 
     serialize_rules = ('-connections.user',
-                       '-connections.employee.company',
+                       '-connections.employee.company.employees',
                        '-connections.employee.connections',
                        '-connections.employee.contacted',
                        '-connections.employee.email',
@@ -34,7 +34,7 @@ class User(db.Model, SerializerMixin):
     #Had to add nullable=True for flask db upgrade to run - otherwise getting and error
     #Will probably have to change that at some point - columns were created without password before adding it
     #probably have to clear the table first?
-    _password_hash = db.Column(db.String, nullable=True)
+    _password_hash = db.Column(db.String, nullable=False)
 
     connections = db.relationship('Connection', back_populates='user')
 
@@ -91,7 +91,12 @@ class Company(db.Model, SerializerMixin):
 class Employee(db.Model, SerializerMixin):
     __tablename__ = "employees"
 
-    serialize_rules = ('-company.employees',)
+    serialize_rules = ('-company.employees',
+                       '-company.address',
+                       '-company.website_url',
+                       
+                       '-company.employees.connections',
+                       )
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
@@ -120,7 +125,9 @@ class Connection(db.Model, SerializerMixin):
                        '-employee.connections',
                        '-employee.company',
                        '-employee.company_id',
-                       '-employee.website',)
+                       '-employee.website',
+                       
+                       )
     
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
@@ -132,6 +139,7 @@ class Connection(db.Model, SerializerMixin):
     user = db.relationship('User', back_populates='connections')
     employee = db.relationship('Employee', back_populates='connections')
 
+    #
     def __repr__(self):
         return f'<User ID: {self.user_id}, Employee ID: {self.employee_id}>'
     # @validates("email")
