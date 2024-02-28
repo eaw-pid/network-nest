@@ -5,6 +5,14 @@ function AddConnection() {
     return (
         <div>
             <h1>Connection Form</h1>
+
+        </div>
+    )
+}
+
+export default AddConnection
+
+
 {/*            
     <Form className="Auth-form-content">
       <Row className="mb-3">
@@ -58,8 +66,3 @@ function AddConnection() {
       </Button>
     </Form>
   */}
-        </div>
-    )
-}
-
-export default AddConnection

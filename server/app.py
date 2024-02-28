@@ -7,7 +7,7 @@ from flask import request, make_response, session
 from flask_restful import Resource
 #I don't know if we need serializer mixin
 from sqlalchemy_serializer import SerializerMixin
-from sqlalchemy.exc import IntegrityError
+
 from models.models import *
 from resources.resources import *
 

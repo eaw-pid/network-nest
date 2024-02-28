@@ -1,30 +1,22 @@
 import React, {useEffect, useState} from 'react';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import { useFormik } from "formik";
 import * as yup from "yup";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
-function Signup({onAddUsers}) {
+function Signup() {
     
+    const [errors, setErrors] = useState([])
 
-
-
+    const navigate = useNavigate()
+    const [login] = useOutletContext()
+    
+    function handleSubmit(user) {
+        login(user)
+    }
     //formik makes sure we're going to display errors and handle onChanges and onSubmit
 //it will check for errors onChange
-
-
-    // const [user, SetUser] = useState([{}])
-    const [refreshPage, setRefreshPage] = useState(false)
-
-    // useEffect(() => {
-    //     fetch("/users")
-    //         .then((res) => res.json())
-    //         .then((data) => {
-    //             SetUser(data)
-    //             console.log(data)
-    //         })
-    // }, [refreshPage]);
-
    
     //schema is like the backend - what attributes make up the user 
     const formSchema = yup.object().shape({
@@ -46,6 +38,7 @@ function Signup({onAddUsers}) {
         },
         validationSchema: formSchema,
         onSubmit: (values) => {
+            setErrors([])
             console.log(values)
             fetch('/signup' , {
                 method: "POST",
@@ -54,11 +47,24 @@ function Signup({onAddUsers}) {
                 },
                 body: JSON.stringify(values, null, 2)
             })
-            .then((res) => res.json())
-            .then((newUser) => onAddUsers(newUser))
+            .then(r => {
+                if(r.ok) {
+                    r.json()
+                    .then
+                    (user => handleSubmit(user))
+                    // // (navigate('/'))
+                } else {
+                    r.json().then(err => setErrors(err.errors))
+                }
+            })
+            // .then((res) => res.json())
+            // .then((newUser) => onAddUsers(newUser))
         }
 });
 
+    function displayErrors(error) {
+        return error ? <p style={{color: "red"}}>{error}</p> : null
+    }
 
     return(
         <div>
@@ -75,7 +81,7 @@ function Signup({onAddUsers}) {
                     value={formik.values.username}
                     onChange={formik.handleChange}
                     />
-                    <p style={{color: 'red'}}>{formik.errors.username}</p>
+                    {displayErrors(formik.errors.username)}
                 </Form.Group>  
                 <Form.Group className="mb-3" controlId="formGroupFirstName">    
                     <Form.Label>First Name</Form.Label>
@@ -86,7 +92,7 @@ function Signup({onAddUsers}) {
                     value={formik.values.first_name}
                     onChange={formik.handleChange}/>
                 </Form.Group>
-                <p style={{color: 'red'}}>{formik.errors.first_name}</p>
+                {displayErrors(formik.errors.first_name)}
                 <Form.Group className="mb-3" controlId="formGroupLastName">    
                     <Form.Label>Last Name</Form.Label>
                     <Form.Control 
@@ -96,7 +102,7 @@ function Signup({onAddUsers}) {
                     onChange={formik.handleChange}
                     value={formik.values.last_name}/>
                 </Form.Group>
-                <p style={{color: 'red'}}>{formik.errors.last_name}</p>
+                {displayErrors(formik.errors.last_name)}
                 <Form.Group className="mb-3" controlId="formGroupEmail">    
                     <Form.Label>Email</Form.Label>
                     <Form.Control 
@@ -106,7 +112,7 @@ function Signup({onAddUsers}) {
                     onChange={formik.handleChange}
                     value={formik.values.email}/>
                 </Form.Group>
-                <p style={{color: 'red'}}>{formik.errors.password}</p>
+                {displayErrors(formik.errors.email)}
                 <Form.Group className="mb-3" controlId="formGroupPassword">    
                     <Form.Label>Password</Form.Label>
                     <Form.Control 
@@ -116,7 +122,7 @@ function Signup({onAddUsers}) {
                     onChange={formik.handleChange}
                     value={formik.values.password}/>
                 </Form.Group>  
-                <p style={{color: 'red'}}>{formik.errors.password}</p>  
+                {displayErrors(formik.errors.password)} 
                 <Button variant="primary" type="submit">Sign Up!</Button> 
             </div>
         </Form>

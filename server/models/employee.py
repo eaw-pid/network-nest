@@ -17,7 +17,7 @@ class Employee(db.Model, SerializerMixin):
                        '-connections',
                        '-company.employees.connections',
                        )
-
+##set contacted to False for default?
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     email = db.Column(db.String, nullable=False)
@@ -29,6 +29,12 @@ class Employee(db.Model, SerializerMixin):
     #relationship mapping to review the related company:
     company = db.relationship('Company', back_populates="employees")
     connections = db.relationship('Connection', back_populates='employee')
+
+    @validates('email')
+    def validate_email(self, key, email):
+        if '@' not in email:
+            raise ValueError("Email not valid")
+        return email
     
     def __repr__(self):
         return f'<{self.name}>'

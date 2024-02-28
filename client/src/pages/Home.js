@@ -1,38 +1,31 @@
 import React, {useEffect, useState} from 'react'
-import AddConnection from '../components/AddConnection'
-import ConnectTable from '../components/ConnectTable'
-import Login from './Login'
-import Signup from './Signup'
+import { useOutlet, useOutletContext } from 'react-router-dom'
+// import AddConnection from '../components/AddConnection'
+// import ConnectTable from '../components/ConnectTable'
+import MyConnects from './MyConnects'
 
 
 
 function Home() {
 
-    // const [connections, setConnections] = useState([])
-    const [loggedIn, setIsLoggedIn] = useState(false)
-    const [users, setUsers] = useState([])
+    const [currentUser] = useOutletContext()
 
-    useEffect(() => {
-        fetch("/users")
-        .then((res) => res.json())
-        .then((data) => setUsers(data))
-    }, [])
-
-function handleAddUsers(newUser) {
-    console.log(newUser)
-    // setUsers([...users, newUser ])
-}
-//if user is not logged in, show login page
+    console.log(currentUser)
+    if (!currentUser) {
+        return (
+            <div>
+                <h1 style={{textAlign: "center"}}>User home page</h1>
+                <MyConnects />
+            </div> 
+        )
+    }
     return (
-        <div>
-            <h1>User home page</h1>
-         {loggedIn ?    
-            <Login /> : null }
-            <Signup onAddUsers={handleAddUsers}/>
-            <AddConnection />
-            <ConnectTable />
-        </div>
-    )
+        <h1>LoggedIn</h1>
+        )
 }
 
-export default Home
+export default Home 
+
+
+
+

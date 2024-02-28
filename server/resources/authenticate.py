@@ -1,5 +1,6 @@
 from flask import request, make_response, session
 from flask_restful import Resource
+from sqlalchemy.exc import IntegrityError
 from config import app, db, api
 from models.user import User
 
@@ -12,8 +13,9 @@ class Login(Resource):
         password = data.get("password")
         #first check if an account exists by username
         user = User.query.filter_by(username=username).first()
+        
         #check if the user's password matches user acct
-        #authenticate is process of validating the password - defined in User Model
+        #authenticate is process of validating the password - defined in User Mode
         if user and user.authenticate(password):
         #login user if yes
             session["user_id"] = user.id

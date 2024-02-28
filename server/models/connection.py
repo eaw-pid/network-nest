@@ -21,7 +21,7 @@ class Connection(db.Model, SerializerMixin):
                        '-employee.website',
                        
                        )
-    
+
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     employee_id = db.Column(db.Integer, db.ForeignKey('employees.id'))

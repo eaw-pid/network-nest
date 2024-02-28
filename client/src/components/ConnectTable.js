@@ -1,6 +1,8 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 
 function ConnectTable() {
+
+
     return (
         <div className="connect-table">
             {/* <table class="table table-bordered">
