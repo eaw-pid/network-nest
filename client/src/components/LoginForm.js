@@ -13,7 +13,7 @@ function LoginForm() {
 
     const [errors, setErrors] = useState([])
     const navigate = useNavigate()
-    const [login] = useOutletContext()
+    const {login} = useOutletContext()
     
     function handleSubmit(values) {
         login(values)

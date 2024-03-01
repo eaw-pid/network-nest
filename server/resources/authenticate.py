@@ -35,7 +35,8 @@ class CheckSession(Resource):
             return user.to_dict(), 200
         #return the current user if it exists
         #else return an empty response
-        return {}, 200
+        else:
+            return {}, 401
         
 class Signup(Resource):
     def post(self):

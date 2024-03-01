@@ -10,14 +10,14 @@ function Signup() {
     const [errors, setErrors] = useState([])
 
     const navigate = useNavigate()
-    const [login] = useOutletContext()
+    const {login} = useOutletContext()
     
     function handleSubmit(user) {
         login(user)
     }
     //formik makes sure we're going to display errors and handle onChanges and onSubmit
 //it will check for errors onChange
-   
+    
     //schema is like the backend - what attributes make up the user 
     const formSchema = yup.object().shape({
         username: yup.string().required("Must enter username").min(3).max(20),

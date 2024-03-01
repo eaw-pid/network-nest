@@ -2,6 +2,8 @@ from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import validates
 from sqlalchemy.ext.hybrid import hybrid_property
+from .connection import *
+
 
 
 from config import db, bcrypt
@@ -10,12 +12,10 @@ class User(db.Model, SerializerMixin):
     __tablename__ = "users"
 
     serialize_rules = ('-connections.user',
-                       '-connections.employee.company.employees',
-                       '-connections.employee.connections',
-                       '-connections.employee.contacted',
-                       '-connections.employee.email',
-                       '-connections.employee_id',
-                       '-connections.user_id')
+                       
+                       '-connections.user_id'
+                       '-employees',)
+    
 
 
     id = db.Column(db.Integer, primary_key=True)
@@ -29,7 +29,10 @@ class User(db.Model, SerializerMixin):
     _password_hash = db.Column(db.String, nullable=False)
 
     connections = db.relationship('Connection', back_populates='user')
-
+    #Association proxy to get employees for this user through Connections
+    employees = association_proxy('connections', 'employee',
+                                  creator=lambda employee_obj: Connection(employee=employee_obj))
+    
     #need hybrid property to define password_hash.setter
     @hybrid_property
     def password_hash(self):

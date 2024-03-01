@@ -4,6 +4,7 @@ import Login from "./pages/Login"
 import Signup from "./pages/Signup"
 import MyConnects from "./pages/MyConnects"
 import ErrorPage from "./pages/ErrorPage"
+import Companies from "./pages/Companies"
 
 const routes = [
     {
@@ -26,6 +27,10 @@ const routes = [
             {
                 path: "/my-connections",
                 element: <MyConnects />,
+            },
+            {
+                path: "/companies",
+                element: <Companies />,
             },
         
             

@@ -8,7 +8,7 @@ class CompanyResource(Resource):
 
         companies = []
 
-        for companies in Company.query.all():
+        for company in Company.query.all():
             company_dict = company.to_dict()
             companies.append(company_dict)
     

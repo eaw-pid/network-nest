@@ -13,8 +13,7 @@ class Company(db.Model, SerializerMixin):
                        '-employees.company_id', 
                        '-employees.connections',
                        '-employees.website',
-                       '-employees.contacted',
-                       '-employees.email',)
+                       )
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)

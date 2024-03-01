@@ -6,7 +6,7 @@ import styles from './NavBar.css'
 import logoImage from '../images/logo-2.png';
 
 
-function NavBar({currentUser, setCurrentUser, logout}) {
+function NavBar({currentUser, logout}) {
 
     function handleLogout() {
         logout()
@@ -34,6 +34,10 @@ function NavBar({currentUser, setCurrentUser, logout}) {
                 <>
                 <Nav className="me-auto">
                     <Nav.Link as={NavLink} to="/my-connections" className={styles.navLink}>My Connections</Nav.Link>  
+                    
+                </Nav>
+                <Nav className="me-auto">
+                    <Nav.Link as={NavLink} to="/companies" className={styles.navLink}>Browse Companies</Nav.Link>  
                     
                 </Nav>
                 <Button bsstyle="primary" onClick={handleLogout}>Logout</Button>

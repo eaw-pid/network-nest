@@ -30,7 +30,7 @@ class ConnectionsById(Resource):
            for attr in form_data:
                setattr(connection, attr, form_data.get(attr))
 
-           db.session.add(connections)
+           db.session.add(connection)
            db.session.commit()
     
     def delete(self, id):
