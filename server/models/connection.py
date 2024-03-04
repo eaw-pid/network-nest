@@ -16,7 +16,7 @@ class Connection(db.Model, SerializerMixin):
                        '-employee_id',
                        '-user_id',
                        '-employee.connections',
-                       '-employee.company',
+                       '-employee.company.employees',
                        '-employee.company_id',
                        '-employee.website',
                        

@@ -7,15 +7,15 @@ import MyConnects from './MyConnects'
 
 function Home() {
 
-    const {currentUser, loggedIn} = useOutletContext()
+    const {currentUser, loggedIn, companies} = useOutletContext()
 
-    console.log(currentUser)
+
+    
     if (currentUser) {
         return (
             <div>
-                <h1 style={{textAlign: "center"}}>User home page</h1>
-                <h1></h1>
-                <MyConnects />
+                
+                <MyConnects companies={companies}/>
             </div> 
         )
     }

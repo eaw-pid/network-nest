@@ -12,6 +12,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(true)
   const [currentUser, setCurrentUser] = useState(null)
   const [userInfo, setUserInfo] = useState({})
+  const [companies, setCompanies] = useState([])
 
   useEffect(() => {
     fetch("/checksession").then((r) => {
@@ -20,6 +21,12 @@ function App() {
       }
     });
   }, []);
+
+  useEffect(() => {
+    fetch('/companies')
+    .then(r => r.json())
+    .then(data => setCompanies(data))
+}, [])
 
   function login(user) {
       setCurrentUser(user)
@@ -38,7 +45,7 @@ function App() {
       <NavBar currentUser={currentUser} setCurrentUser={setCurrentUser} logout={logout}/>
     </header>
       <Outlet 
-        context={{login, loggedIn, setUserInfo, userInfo, currentUser}}/>
+        context={{login, loggedIn, setUserInfo, userInfo, currentUser, companies}}/>
   
     </>
   )

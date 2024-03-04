@@ -1,12 +1,14 @@
 import React, {useEffect, useState} from 'react'
 import ConnectTable from '../components/ConnectTable'
+import AddConnectForm from '../components/AddConnectForm'
 import { useOutletContext } from 'react-router-dom'
 import Button from 'react-bootstrap'
 
 
-function MyConnects() {
+function MyConnects({companies}) {
 
     const {userInfo, setUserInfo, currentUser} = useOutletContext()
+    const [clicked, setIsClicked] = useState(false)
 
     console.log(currentUser)
     useEffect(() => {
@@ -16,23 +18,14 @@ function MyConnects() {
         .then(data => setUserInfo(data))
     }, [])
 
-        console.log(userInfo)
         
-    
     const {connections} = userInfo
-    console.log(connections)
+    
+    function handleClick() {
+        setIsClicked((clicked) => !clicked)
+    }
    
-    
-    const list = connections.map((connect) => {
-        return (
-            <>
-            <h1>Name: {connect.employee.name}</h1>
-            <p>Contacted: {connect.employee.email}</p>
-            
-            </>
-        )
-    })
-    
+
 
     
 
@@ -41,6 +34,8 @@ function MyConnects() {
       
             <div>
                 <h1 className="connection-header">My Connections</h1>
+                <button onClick={handleClick}>Add a Connection</button>
+                {clicked ? <AddConnectForm companies={companies}/> : null}
                 <div className="connect-table">
                 <table className="table table-bordered">
                     <thead>
@@ -51,29 +46,11 @@ function MyConnects() {
                         <th scope="col">Date Contacted</th>
                         <th scope="col">Connection Type</th>
                         <th scope="col">Notes</th>
+                        <th scope="col">Status</th>
                     </tr> 
                 </thead>
-                    <tr>
-                        <td>Row</td>
-                        <td>Row</td>
-                        <td>Row</td>
-                        <td>Row</td>
-                        <td>Row</td>
-                        <td>Row</td>
-                    </tr>
-
-                {/* <ConnectTable connections={connections}/>  */}
+                    <ConnectTable connections={connections}/>
                 </table>
-                {/* {connections.map((connect) => {
-                        return (
-                            <>
-                            <h1>Name: {connect.employee.name}</h1>
-                            <p>Contacted: {connect.employee.email}</p>
-                            
-                            </>
-                        )
-                    })} */}
-                    {list}
                 </div>
             </div>
             
