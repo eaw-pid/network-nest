@@ -85,7 +85,7 @@ class Logout(Resource):
 
 
         
-api.add_resource(Signup, '/signup')
-api.add_resource(Logout, '/logout')
-api.add_resource(Login, '/login')
-api.add_resource(CheckSession, '/checksession')
+api.add_resource(Signup, '/signup', endpoint="signup")
+api.add_resource(Logout, '/logout', endpoint="logout")
+api.add_resource(Login, '/login', endpoint="login")
+api.add_resource(CheckSession, '/checksession', endpoint="checksession")

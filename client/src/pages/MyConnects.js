@@ -4,8 +4,9 @@ import AddConnectForm from '../components/AddConnectForm'
 import { useOutletContext } from 'react-router-dom'
 import Button from 'react-bootstrap'
 
+// {companies, onAddCompany}
+function MyConnects() {
 
-function MyConnects({companies}) {
 
     const {userInfo, setUserInfo, currentUser} = useOutletContext()
     const [clicked, setIsClicked] = useState(false)
@@ -27,7 +28,7 @@ function MyConnects({companies}) {
    
 
 
-    
+    // companies={companies} onAddCompany={onAddCompany}
 
     return (
         
@@ -35,7 +36,7 @@ function MyConnects({companies}) {
             <div>
                 <h1 className="connection-header">My Connections</h1>
                 <button onClick={handleClick}>Add a Connection</button>
-                {clicked ? <AddConnectForm companies={companies}/> : null}
+                {clicked ? <AddConnectForm /> : null}
                 <div className="connect-table">
                 <table className="table table-bordered">
                     <thead>
@@ -49,7 +50,9 @@ function MyConnects({companies}) {
                         <th scope="col">Status</th>
                     </tr> 
                 </thead>
+                <tbody>
                     <ConnectTable connections={connections}/>
+                </tbody>
                 </table>
                 </div>
             </div>

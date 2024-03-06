@@ -2,12 +2,14 @@ import React, {useState, useEffect} from 'react'
 import CompanyCard from '../components/CompanyCard'
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import { useOutletContext } from 'react-router-dom';
 
 
 function Companies() {
 
-    const [companies, setCompanies] = useState([])
-
+    
+    const {companies, setCompanies} = useOutletContext()
+    
     useEffect(() => {
         fetch('/companies')
         .then(r => r.json())

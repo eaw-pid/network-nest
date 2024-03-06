@@ -1,5 +1,6 @@
 from flask import request, make_response, session
 from flask_restful import Resource
+from sqlalchemy.exc import IntegrityError
 from config import app, db, api
 
 from models.employee import Employee
@@ -16,6 +17,30 @@ class EmployeeResource(Resource):
     
         response = make_response(employees, 200)
         return response
+    
+    def post(self):
+
+        data = request.get_json()
+        name = data.get("name")
+        email = data.get("email")
+        website = data.get("website")
+        company_id=data.get("company_id")
+
+        try:
+            newEmployee = Employee(
+                            name=name,
+                            email=email,
+                            website=website,
+                            contacted=True,
+                            company_id=company_id
+                            )
+
+            db.session.add(newEmployee)
+            db.session.commit()
+
+            return newEmployee.to_dict(), 201
+        except ValueError as err:
+            return {"error": str(err)}, 422
     
 class EmployeeById(Resource):
 
@@ -49,5 +74,5 @@ class EmployeeById(Resource):
 
 
 
-api.add_resource(EmployeeResource, '/employees')
-api.add_resource(EmployeeById, '/employees/<int:id>')
+api.add_resource(EmployeeResource, '/employees', endpoint="employees")
+api.add_resource(EmployeeById, '/employees/<int:id>', endpoint="employee")

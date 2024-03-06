@@ -43,5 +43,5 @@ class ConnectionsById(Resource):
         return {"message": "User not found"}, 404
         
 
-api.add_resource(ConnectionsResource, '/connections')
-api.add_resource(ConnectionsById, '/connections/<int:id>')
+api.add_resource(ConnectionsResource, '/connections', endpoint="connections")
+api.add_resource(ConnectionsById, '/connections/<int:id>', endpoint="connection")

@@ -7,15 +7,15 @@ import MyConnects from './MyConnects'
 
 function Home() {
 
-    const {currentUser, loggedIn, companies} = useOutletContext()
+    const {currentUser} = useOutletContext()
 
+    // <MyConnects companies={companies} onAddCompany={onAddCompany}/>
 
-    
     if (currentUser) {
         return (
             <div>
                 
-                <MyConnects companies={companies}/>
+                <MyConnects />
             </div> 
         )
     }
@@ -31,3 +31,5 @@ export default Home
 
 // import AddConnection from '../components/AddConnection'
 // import ConnectTable from '../components/ConnectTable'
+
+// loggedIn, companies, onAddCompany

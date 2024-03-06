@@ -28,24 +28,36 @@ function App() {
     .then(data => setCompanies(data))
 }, [])
 
+console.log(companies)
   function login(user) {
       setCurrentUser(user)
       setLoggedIn(true)
     }
     
   function logout() {
-      setCurrentUser(null)
-      setLoggedIn(false)
+      fetch("/logout", {
+        method: "DELETE"
+      })
+      .then((r) => {
+        if (r.ok) {
+          setCurrentUser(null)
+          setLoggedIn(false)
+        }
+      })
     }
   
-    // console.log(currentUser)
+  
+  function onAddCompany(newCompany) {
+    setCompanies([...companies, newCompany])
+  }
+
     return (
     <>
     <header className="App">
       <NavBar currentUser={currentUser} setCurrentUser={setCurrentUser} logout={logout}/>
     </header>
       <Outlet 
-        context={{login, loggedIn, setUserInfo, userInfo, currentUser, companies}}/>
+        context={{login, loggedIn, setUserInfo, userInfo, currentUser, companies, setCompanies, onAddCompany}}/>
   
     </>
   )

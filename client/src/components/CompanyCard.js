@@ -8,15 +8,16 @@ import Card from 'react-bootstrap/Card'
 function CompanyCard({company}) {
 
     const {employees} = company
-    console.log(employees)
+    
 
     const employeeList = employees.map((employee) => {
         return (
-            <>
-            <Card.Text>Name: {employee.name} Email: {employee.email}</Card.Text>
+            <React.Fragment key={employee.id}>
+            <Card.Text>Name: {employee.name} </Card.Text>
+            <Card.Text>Email: {employee.email}</Card.Text>
             <Card.Text>Contacted: {employee.contacted ? "✔️" : "✖️"}</Card.Text>
             <a href="" className="btn btn-outline-primary btn-sm">Add to "My Connections"</a>
-            </>
+            </React.Fragment>
         )
     })
 

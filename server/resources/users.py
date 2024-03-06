@@ -45,5 +45,5 @@ class UserById(Resource):
         return {"message": "User not found"}, 404
         
 
-api.add_resource(UsersResource, '/users')
-api.add_resource(UserById, '/users/<int:id>')
+api.add_resource(UsersResource, '/users', endpoint="users")
+api.add_resource(UserById, '/users/<int:id>', endpoint="user")

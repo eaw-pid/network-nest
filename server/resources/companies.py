@@ -1,5 +1,6 @@
 from flask import request, make_response, session
 from flask_restful import Resource
+from sqlalchemy.exc import IntegrityError
 from config import app, db, api
 from models.company import Company
 
@@ -14,6 +15,30 @@ class CompanyResource(Resource):
     
         response = make_response(companies, 200)
         return response
+    
+    def post(self):
+
+        data = request.get_json()
+        name = data.get("name")
+        address = data.get("address")
+        website_url = data.get("website_url")
+
+        try:
+            newCompany = Company(
+                            name=name,
+                            address=address,
+                            website_url=website_url,
+                            )
+
+            db.session.add(newCompany)
+            db.session.commit()
+
+            return newCompany.to_dict(), 201
+        except IntegrityError:
+            return {"error": "Company Name Already Exists"}, 422
+        except ValueError as err:
+            return {"error": str(err)}, 422
+
 
 class CompanyById(Resource):
     def get(self, id):
@@ -44,5 +69,5 @@ class CompanyById(Resource):
         return {"message": "Company not found"}, 404
         
 
-api.add_resource(CompanyResource, '/companies')
-api.add_resource(CompanyById, '/companies/<int:id>')
+api.add_resource(CompanyResource, '/companies', endpoint="companies")
+api.add_resource(CompanyById, '/companies/<int:id>', endpoint="company")

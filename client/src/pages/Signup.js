@@ -51,8 +51,10 @@ function Signup() {
                 if(r.ok) {
                     r.json()
                     .then
-                    (user => handleSubmit(user))
-                    // // (navigate('/'))
+                    (user => {
+                        handleSubmit(user)
+                        navigate('/my-connections')})
+                   
                 } else {
                     r.json().then(err => setErrors(err.errors))
                 }
