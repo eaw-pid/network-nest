@@ -1,38 +1,28 @@
 import React, {useState, useEffect} from 'react'
-import { useOutlet, useOutletContext } from 'react-router-dom';
+import { useNavigate, useOutlet, useOutletContext } from 'react-router-dom';
 import { useFormik } from "formik";
 import * as yup from "yup";
 
-// TODO {companies, onAddCompany}
-function AddConnectForm() {
+function AddConnectForm({clicked, setIsClicked}) {
 
-  const {companies, onAddCompany} = useOutletContext()
+  const {companies, onAddCompany, currentUser} = useOutletContext()
   const [company, setCompany] = useState({})
   const [employee, setEmployee] = useState({})
-  const [selectCompany, setSelectedCompany] = useState(false)
-  const [companyName, setCompanyName] = useState("")
-  const [address, setAddress] = useState("")
-  const [website, setWebsite] = useState("")
-  const [employeeName, setEmployeeName] = useState("")
-  const [employeeEmail, setEmployeeEmail] = useState("")
-  const [employeeWebsite, setEmployeeWebsite] = useState("")
+  const [selectCompany, setSelectCompany] = useState(false)
+ 
   
-  console.log(companies)
+  
+  const navigate = useNavigate()
 
-  const formSchema = yup.object().shape({
+//SELECT EMPLOYEE/ADD EMPLOYEE
+  const formOneSchema = yup.object().shape({
     name: yup.string().required("Must enter company name"),
     address: yup.string().required("*required"),
     website_url: yup.string().required("*required")
   })
 
-  const formik = useFormik({
-    initialValues: {
-        name: "",
-        address: "",
-        website_url: "",
-    },
-    validationSchema: formSchema,
-    onSubmit: (values) => {
+
+  function handleSubmitOne(values) {
         fetch('/companies', {
             method: "POST",
             headers: {
@@ -46,12 +36,20 @@ function AddConnectForm() {
                 .then(data => {
                     onAddCompany(data)
                     setCompany(data)
+                    setSelectCompany((selectCompany) => !selectCompany)
+                    // setIsClicked((isClicked) => !isClicked)
                 })
             }
         })
     }
-    
-
+  const formik1 = useFormik({
+    initialValues: {
+        name: "",
+        address: "",
+        website_url: "",
+    },
+    validationSchema: formOneSchema,
+    onSubmit: (values) => handleSubmitOne(values)
   })
 
   function handleChange(e) {
@@ -61,47 +59,31 @@ function AddConnectForm() {
 
 
   function handleExistingSubmit(e) {
-    
-    setSelectedCompany((selectCompany) => !selectCompany)
+    e.preventDefault()
+    setSelectCompany((selectCompany) => !selectCompany)
   }
 
-  
-  function handleNewSubmit(e) {
-    e.preventDefault()
+  //ADD EMPLOYEE
+  const formTwoSchema = yup.object().shape({
+    name: yup.string().required("Must enter company name"),
+    email: yup.string().required("*required"),
+    website: yup.string().required("*required")
+  })
 
-    const newCompany = {
-        name: companyName,
-        address: address,
-        website_url: website,
-    }
-    fetch('/companies', {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(newCompany)
-    })
-    .then(res => res.json())
-    .then(data => {
-        onAddCompany(data)
-        setCompany(data)})
-  }
+  const formik2 = useFormik({
+    initialValues: {
+        name: "",
+        email: "",
+        website: "",
+    },
+    validationSchema: formTwoSchema,
+    onSubmit: (values) => handleSubmitTwo(values)
 
-//   setSelectedCompany((selectCompany) => !selectCompany)
-//   console.log(company)
-  
-  function handleEmployeeSubmit(e) {
-    e.preventDefault()
+  })
+
+  function handleSubmitTwo(values) {
     
-
-    const newEmployee = {
-        name: employeeName,
-        email: employeeEmail,
-        website: employeeWebsite,
-        contacted: 1,
-        company_id: company.id
-    }
-
+    const newEmployee = {...values, contacted: 1, company_id:company.id}
     console.log(newEmployee)
     fetch('/employees', {
         method: "POST",
@@ -113,12 +95,44 @@ function AddConnectForm() {
     .then(res => res.json())
     .then(data => setEmployee(data))
   }
+  
+//ADD CONNECTION
 
-//onSubmit: handleEmployeeSubmit(values)
+const formThreeSchema = yup.object().shape({
 
-//function handleEmployeeSubmit(values)
-//....{...value, company_id: company.id}
-console.log(companies)
+})
+const formik3 = useFormik({
+    initialValues: {
+        action: "",
+        notes: ""
+    },
+    validationSchema: formThreeSchema,
+    onSubmit: (values) => handleSubmitThree(values)
+})
+
+function handleSubmitThree(values) {
+    const newConnection = {
+        user_id: currentUser.id,
+        employee_id: employee.id,
+        ...values
+    }
+    fetch('/connections', {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newConnection)
+    })
+    .then(res => res.json())
+    .then(navigate('/my-connections'))
+    // .then(data => console.log(data))
+}
+
+  function displayErrors(error) {
+    return error ? <p style={{color: "red"}}>{error}</p> : null
+}
+
+
     return (
         <div>
             <div>
@@ -135,62 +149,88 @@ console.log(companies)
                  <button>Next</button>
                  </div>
                  </form>
-                 <form >
+                 <form onSubmit={formik1.handleSubmit} >
                  <div>
                     <h4>Or Add New Company</h4>
                     <label>Company Name</label>
-                    <input name="name"
+                    <input
+                        type="text"  
+                        name="name"
                         placeholder="Company Name" 
-                        value={formik.values.name}
-                        onChange={formik.handleChange} />
-                       
+                        value={formik1.values.name}
+                        onChange={formik1.handleChange} />
+                       {displayErrors(formik1.errors.name)}
                     <label>Company Address</label>
-                    <input name="address" 
+                    <input 
+                        type="text" 
+                        name="address" 
                         placeholder="Company Address"
-                        value={formik.values.address}
-                        onChange={formik.handleChange}/>
-                    
-                        
+                        value={formik1.values.address}
+                        onChange={formik1.handleChange}/>
+                        {displayErrors(formik1.errors.name)}
                     <label>Company Website</label>
-                    <input name="website" 
+                    <input 
+                        type="text" 
+                        name="website_url" 
                         placeholder="Company Website"
-                        value={formik.values.website_url}
-                        onChange={formik.handleChange}/>
-                        
-                    <button>Submit</button>
+                        value={formik1.values.website_url}
+                        onChange={formik1.handleChange}/>
+                        {displayErrors(formik1.errors.name)}
+                    <button type="submit">Submit</button>
                  </div>
             </form>
             </div>
+            {selectCompany ? 
             
             <div>
                 <h3>Step 2: Add Employee</h3>
-                <form onSubmit={handleEmployeeSubmit}>
+                <form onSubmit={formik2.handleSubmit}>
                     <div className="form-group col-md-4">
                         <label>Contact Name</label>
                         <input 
+                        type="text"
                         name="name" 
                         placeholder="Contact Name"
-                        value={employeeName}
-                        onChange={(e) => setEmployeeName(e.target.value)}
-                        ></input>
+                        value={formik2.values.name}
+                        onChange={formik2.handleChange}/>
                         <label>Contact Email</label>
                         <input 
                         name="email" 
                         placeholder='Email'
-                        value={employeeEmail}
-                        onChange={(e) => setEmployeeEmail(e.target.value)}
-                        ></input>
+                        value={formik2.values.email}
+                        onChange={formik2.handleChange}/>
                         <label>Website</label>
                         <input 
                         name="website" 
                         placeholder="Website"
-                        value={employeeWebsite}
-                        onChange={(e) => setEmployeeWebsite(e.target.value)}
-                        ></input>
-                        <button>Submit</button>
+                        value={formik2.values.website}
+                        onChange={formik2.handleChange}/>
+    
+                        <button type="submit">Submit</button>
                     </div>
                 </form>
             </div> 
+            : null }
+            <div>
+                <h3>Step 3: Add Connection</h3>
+                <form onSubmit={formik3.handleSubmit}>
+                    <label>Type of Contact:</label>
+                    <select name ="action" value={formik3.values.action} onChange={formik3.handleChange}>
+                        <option>Select an Option</option>
+                        <option  value="Phone Call">Phone Call</option>
+                        <option  value="Email">Email</option>
+                        <option  value="LinkedIn Message">LinkedIn Message</option>
+                    </select>
+                    <label>Notes</label>
+                    <input
+                        type="text"
+                        name="notes"
+                        placeholder="Add Details"
+                        value={formik3.values.notes}
+                        onChange={formik3.handleChange}/>
+                    <button type="submit">Add Connection!</button>
+                </form>
+            </div>
         </div> 
     )
 }
@@ -198,128 +238,28 @@ console.log(companies)
 export default AddConnectForm
 
 
-// function Signup() {
-    
-//     const [errors, setErrors] = useState([])
 
-//     const navigate = useNavigate()
-//     const {login} = useOutletContext()
-    
-//     function handleSubmit(user) {
-//         login(user)
+
+//   function handleNewSubmit(e) {
+//     e.preventDefault()
+
+//     const newCompany = {
+//         name: companyName,
+//         address: address,
+//         website_url: website,
 //     }
-//     //formik makes sure we're going to display errors and handle onChanges and onSubmit
-// //it will check for errors onChange
-    
-//     //schema is like the backend - what attributes make up the user 
-//     const formSchema = yup.object().shape({
-//         username: yup.string().required("Must enter username").min(3).max(20),
-//         first_name: yup.string().required("Must enter First Name"),
-//         last_name: yup.string().required("Must enter Last Name"),
-//         email: yup.string().email("Invalid email").required("Must enter email"),
-//         password: yup.string().required("Must enter a password"),
-    
-//       });
-      
-//     const formik = useFormik({
-//         initialValues: {
-//             username: "",
-//             first_name: "",
-//             last_name: "",
-//             email: "",
-//             password: "",
+//     fetch('/companies', {
+//         method: "POST",
+//         headers: {
+//             "Content-Type": "application/json"
 //         },
-//         validationSchema: formSchema,
-//         onSubmit: (values) => {
-//             setErrors([])
-//             console.log(values)
-//             fetch('/signup' , {
-//                 method: "POST",
-//                 headers: {
-//                     "Content-Type": "application/json"
-//                 },
-//                 body: JSON.stringify(values, null, 2)
-//             })
-//             .then(r => {
-//                 if(r.ok) {
-//                     r.json()
-//                     .then
-//                     (user => handleSubmit(user))
-//                     // // (navigate('/'))
-//                 } else {
-//                     r.json().then(err => setErrors(err.errors))
-//                 }
-//             })
-//             // .then((res) => res.json())
-//             // .then((newUser) => onAddUsers(newUser))
-//         }
-// });
+//         body: JSON.stringify(newCompany)
+//     })
+//     .then(res => res.json())
+//     .then(data => {
+//         onAddCompany(data)
+//         setCompany(data)})
+//   }
 
-//     function displayErrors(error) {
-//         return error ? <p style={{color: "red"}}>{error}</p> : null
-//     }
-
-//     return(
-//         <div>
-//         <div className="Auth-form-container">
-//            <Form className="Auth-form" onSubmit={formik.handleSubmit}>
-//                <div className="Auth-form-content">
-//                 <Form.Label className="Auth-form-title">Sign Up</Form.Label>
-//                 <Form.Group>    
-//                     <Form.Label htmlFor="username">Username</Form.Label>
-//                     <Form.Control 
-//                     type="text" 
-//                     name="username"
-//                     placeholder="Enter Username" 
-//                     value={formik.values.username}
-//                     onChange={formik.handleChange}
-//                     />
-//                     {displayErrors(formik.errors.username)}
-//                 </Form.Group>  
-//                 <Form.Group className="mb-3" controlId="formGroupFirstName">    
-//                     <Form.Label>First Name</Form.Label>
-//                     <Form.Control 
-//                     type="text" 
-//                     name="first_name"
-//                     placeholder="Enter First Name" 
-//                     value={formik.values.first_name}
-//                     onChange={formik.handleChange}/>
-//                 </Form.Group>
-//                 {displayErrors(formik.errors.first_name)}
-//                 <Form.Group className="mb-3" controlId="formGroupLastName">    
-//                     <Form.Label>Last Name</Form.Label>
-//                     <Form.Control 
-//                     type="text" 
-//                     name="last_name"
-//                     placeholder="Enter Last Name" 
-//                     onChange={formik.handleChange}
-//                     value={formik.values.last_name}/>
-//                 </Form.Group>
-//                 {displayErrors(formik.errors.last_name)}
-//                 <Form.Group className="mb-3" controlId="formGroupEmail">    
-//                     <Form.Label>Email</Form.Label>
-//                     <Form.Control 
-//                     type="text" 
-//                     name="email"
-//                     placeholder="Enter Email" 
-//                     onChange={formik.handleChange}
-//                     value={formik.values.email}/>
-//                 </Form.Group>
-//                 {displayErrors(formik.errors.email)}
-//                 <Form.Group className="mb-3" controlId="formGroupPassword">    
-//                     <Form.Label>Password</Form.Label>
-//                     <Form.Control 
-//                     type="text" 
-//                     name="password"
-//                     placeholder="Password" 
-//                     onChange={formik.handleChange}
-//                     value={formik.values.password}/>
-//                 </Form.Group>  
-//                 {displayErrors(formik.errors.password)} 
-//                 <Button variant="primary" type="submit">Sign Up!</Button> 
-//             </div>
-//         </Form>
-//         </div>
-//         </div>
-//     )
-// }
+//   setSelectedCompany((selectCompany) => !selectCompany)
+//   console.log(company)

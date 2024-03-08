@@ -14,6 +14,29 @@ class ConnectionsResource(Resource):
     
         response = make_response(connections, 200)
         return response
+    
+    def post(self):
+
+        data = request.get_json()
+        user_id = data.get("user_id")
+        employee_id = data.get("employee_id")
+        action = data.get("action")
+        notes=data.get("notes")
+
+        try:
+            newConnection = Connection(
+                            user_id=user_id,
+                            employee_id=employee_id,
+                            action=action,
+                            notes=notes
+                            )
+
+            db.session.add(newConnection)
+            db.session.commit()
+
+            return newConnection.to_dict(), 201
+        except ValueError as err:
+            return {"error": str(err)}, 422
 
 class ConnectionsById(Resource):
     def get(self, id):
@@ -32,6 +55,8 @@ class ConnectionsById(Resource):
 
            db.session.add(connection)
            db.session.commit()
+
+           return {"message": "Connection updated successfully"}, 200
     
     def delete(self, id):
         connection = Connection.query.filter_by(id=id).first()

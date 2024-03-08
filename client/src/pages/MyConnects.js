@@ -1,17 +1,18 @@
 import React, {useEffect, useState} from 'react'
 import ConnectTable from '../components/ConnectTable'
 import AddConnectForm from '../components/AddConnectForm'
+
 import { useOutletContext } from 'react-router-dom'
 import Button from 'react-bootstrap'
 
-// {companies, onAddCompany}
-function MyConnects() {
 
+function MyConnects() {
 
     const {userInfo, setUserInfo, currentUser} = useOutletContext()
     const [clicked, setIsClicked] = useState(false)
+   
 
-    console.log(currentUser)
+    
     useEffect(() => {
         const userId = currentUser.id
         fetch(`/users/${userId}`)
@@ -19,24 +20,25 @@ function MyConnects() {
         .then(data => setUserInfo(data))
     }, [])
 
-        
-    const {connections} = userInfo
+    console.log(userInfo)
+    const connections = userInfo.connections
+    console.log(connections)
+
+    
     
     function handleClick() {
         setIsClicked((clicked) => !clicked)
     }
    
-
-
-    // companies={companies} onAddCompany={onAddCompany}
-
+    
     return (
         
       
             <div>
                 <h1 className="connection-header">My Connections</h1>
                 <button onClick={handleClick}>Add a Connection</button>
-                {clicked ? <AddConnectForm /> : null}
+                
+                {clicked ? <AddConnectForm clicked={clicked} setIsClicked={setIsClicked}/> : null}
                 <div className="connect-table">
                 <table className="table table-bordered">
                     <thead>
@@ -51,7 +53,12 @@ function MyConnects() {
                     </tr> 
                 </thead>
                 <tbody>
-                    <ConnectTable connections={connections}/>
+                    
+                {connections && connections.map((connect) => (
+
+                    <ConnectTable key={connect.id} connect={connect} />
+                ))}
+                   
                 </tbody>
                 </table>
                 </div>

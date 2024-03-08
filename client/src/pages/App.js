@@ -28,7 +28,6 @@ function App() {
     .then(data => setCompanies(data))
 }, [])
 
-console.log(companies)
   function login(user) {
       setCurrentUser(user)
       setLoggedIn(true)
