@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { useNavigate, useOutlet, useOutletContext } from 'react-router-dom';
 import { useFormik } from "formik";
 import * as yup from "yup";
+import {Form, ToggleButton, ToggleButtonGroup} from 'react-bootstrap'
 
 function AddConnectForm({clicked, setIsClicked}) {
 
@@ -9,10 +10,14 @@ function AddConnectForm({clicked, setIsClicked}) {
   const [company, setCompany] = useState({})
   const [employee, setEmployee] = useState({})
   const [selectCompany, setSelectCompany] = useState(false)
+  const [selectEmployee, setSelectEmployee] = useState(false)
+  const [value, setValue] = useState(null);
  
   
   
   const navigate = useNavigate()
+
+
 
 //SELECT EMPLOYEE/ADD EMPLOYEE
   const formOneSchema = yup.object().shape({
@@ -93,7 +98,9 @@ function AddConnectForm({clicked, setIsClicked}) {
         body: JSON.stringify(newEmployee)
     })
     .then(res => res.json())
-    .then(data => setEmployee(data))
+    .then(data => {
+        setEmployee(data)
+        setSelectEmployee(true)})
   }
   
 //ADD CONNECTION
@@ -135,12 +142,22 @@ function handleSubmitThree(values) {
 
     return (
         <div>
-            <div>
+            <div className="add-connection-container">
             <h3>Step 1: Select Company</h3>
+            <ToggleButtonGroup type="radio" value={value} onChange={(val) => setValue(val)} name="toggleGroup">
+                <ToggleButton id="tbg-btn-1" value={1}>
+                    Choose Existing Company
+                </ToggleButton>
+                <ToggleButton id="tbg-btn-2" value={2}>
+                    Add New Company
+                </ToggleButton>
+            </ToggleButtonGroup>
+            {(value === 1) ?
+            <div> 
             <h4>Choose Existing Company</h4>
-            <form onSubmit={handleExistingSubmit}>
+            <Form onSubmit={handleExistingSubmit}>
                 <div className="form-group col-md-4">
-                <select id="inputState" onChange={handleChange}>
+                <select className="dropdown" id="inputState" onChange={handleChange}>
                     <option value="default"></option>
                     {companies.map((company) => (
                         <option key={company.id} value={company.name}>{company.name}</option>
@@ -148,8 +165,10 @@ function handleSubmitThree(values) {
                  </select>
                  <button>Next</button>
                  </div>
-                 </form>
-                 <form onSubmit={formik1.handleSubmit} >
+            </Form> </div>: null}
+            
+            {(value === 2) ?
+                 <Form onSubmit={formik1.handleSubmit} >
                  <div>
                     <h4>Or Add New Company</h4>
                     <label>Company Name</label>
@@ -178,8 +197,9 @@ function handleSubmitThree(values) {
                         {displayErrors(formik1.errors.name)}
                     <button type="submit">Submit</button>
                  </div>
-            </form>
-            </div>
+            </Form>
+            : null}
+            
             {selectCompany ? 
             
             <div>
@@ -209,8 +229,8 @@ function handleSubmitThree(values) {
                         <button type="submit">Submit</button>
                     </div>
                 </form>
-            </div> 
-            : null }
+            </div> : null }
+            {selectEmployee ? 
             <div>
                 <h3>Step 3: Add Connection</h3>
                 <form onSubmit={formik3.handleSubmit}>
@@ -230,6 +250,8 @@ function handleSubmitThree(values) {
                         onChange={formik3.handleChange}/>
                     <button type="submit">Add Connection!</button>
                 </form>
+            </div>
+            : null }
             </div>
         </div> 
     )

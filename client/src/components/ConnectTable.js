@@ -3,14 +3,23 @@ import UpdateConnectForm from '../components/UpdateConnectForm'
 
 
 
-function ConnectTable({connect}) {
+function ConnectTable({connect, handleDeleteConnection}) {
 
     const [updatedClicked, setUpdatedClicked] = useState(false)
 
-
+    console.log(connect)
    
     function handleClick() {
         setUpdatedClicked((updatedClicked) => !updatedClicked)
+    }
+
+    function handleRemove() {
+        fetch(`/connections/${connect.id}`, {
+            method: "DELETE",
+        })
+        .then(res => {
+            handleDeleteConnection(connect.id)
+        })
     }
    
         const date1 = connect.connection_date.slice(5, 7)
@@ -28,7 +37,7 @@ function ConnectTable({connect}) {
                 <td>{connect.action}</td>
                 <td>{connect.notes}</td>
                 <td><button onClick={handleClick}>Update</button></td>
-                <td><button>Remove</button></td>
+                <td><button onClick={handleRemove}>Remove</button></td>
             </tr>
             {updatedClicked ?
                 <UpdateConnectForm connect={connect}/> : null}

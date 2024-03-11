@@ -60,3 +60,13 @@ label {
   grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
   grid-gap: 1rem;
 }
+
+.add-connection-button-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.add-connection-container {
+  text-align: center;
+}
+

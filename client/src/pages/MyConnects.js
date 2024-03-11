@@ -10,6 +10,7 @@ function MyConnects() {
 
     const {userInfo, setUserInfo, currentUser} = useOutletContext()
     const [clicked, setIsClicked] = useState(false)
+    const [connectList, setConnectList] =  useState([])
    
 
     
@@ -17,12 +18,16 @@ function MyConnects() {
         const userId = currentUser.id
         fetch(`/users/${userId}`)
         .then(r => r.json())
-        .then(data => setUserInfo(data))
+        .then(data => {
+            setUserInfo(data)
+            setConnectList(data.connections)})
     }, [])
 
-    console.log(userInfo)
-    const connections = userInfo.connections
-    console.log(connections)
+
+
+    // console.log(userInfo)
+    // const connections = userInfo.connections
+    // setConnectList(connections)
 
     
     
@@ -30,15 +35,25 @@ function MyConnects() {
         setIsClicked((clicked) => !clicked)
     }
    
+    function handleDeleteConnection(id) {
+        const updatedConnections = connectList.filter((connect) => connect.id !== id)
+        setConnectList(updatedConnections)
+    }
     
     return (
         
       
             <div>
                 <h1 className="connection-header">My Connections</h1>
+                {!clicked ?
+                <div className="add-connection-button-container">
+
                 <button onClick={handleClick}>Add a Connection</button>
+                </div>
+                : null }
                 
-                {clicked ? <AddConnectForm clicked={clicked} setIsClicked={setIsClicked}/> : null}
+                {clicked ? <AddConnectForm className="add-connect-button" clicked={clicked} setIsClicked={setIsClicked}/> : null}
+                <br/>
                 <div className="connect-table">
                 <table className="table table-bordered">
                     <thead>
@@ -54,9 +69,9 @@ function MyConnects() {
                 </thead>
                 <tbody>
                     
-                {connections && connections.map((connect) => (
+                {connectList && connectList.map((connect) => (
 
-                    <ConnectTable key={connect.id} connect={connect} />
+                    <ConnectTable key={connect.id} connect={connect} handleDeleteConnection={handleDeleteConnection}/>
                 ))}
                    
                 </tbody>
