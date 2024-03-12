@@ -13,13 +13,16 @@ function Companies() {
     useEffect(() => {
         fetch('/companies')
         .then(r => r.json())
-        .then(companies => setCompanies(companies))
+        .then(companies => {
+       
+            setCompanies(companies)})
     }, [])
 
 
     return (
-        <div>
-            <h1>Company List</h1>
+        <div className="page-body">
+            <h1 className="page-header">Company List</h1>
+          
             <div >
             <Container fluid>
                 <Row>

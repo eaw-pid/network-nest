@@ -42,7 +42,6 @@ function AddConnectForm({clicked, setIsClicked}) {
                     onAddCompany(data)
                     setCompany(data)
                     setSelectCompany((selectCompany) => !selectCompany)
-                    // setIsClicked((isClicked) => !isClicked)
                 })
             }
         })
@@ -132,7 +131,7 @@ function handleSubmitThree(values) {
     })
     .then(res => res.json())
     .then(navigate('/my-connections'))
-    // .then(data => console.log(data))
+    
 }
 
   function displayErrors(error) {

@@ -1,4 +1,5 @@
-import React from "react";
+import React, {useState} from "react";
+import EmployeeList from "./EmployeeList";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card'
@@ -7,19 +8,14 @@ import Card from 'react-bootstrap/Card'
 
 function CompanyCard({company}) {
 
-    const {employees} = company
-    
 
-    const employeeList = employees.map((employee) => {
-        return (
-            <React.Fragment key={employee.id}>
-            <Card.Text>Name: {employee.name} </Card.Text>
-            <Card.Text>Email: {employee.email}</Card.Text>
-            <Card.Text>Contacted: {employee.contacted ? "✔️" : "✖️"}</Card.Text>
-            <a href="" className="btn btn-outline-primary btn-sm">Add to "My Connections"</a>
-            </React.Fragment>
-        )
-    })
+
+    const {employees} = company
+
+    
+    
+    const employeeList = employees.map((employee) => (
+       <EmployeeList key={employee.id} employee={employee}/>))
 
     return (
         <div>
@@ -35,7 +31,7 @@ function CompanyCard({company}) {
                     <a href={company.website_url} className="btn btn-primary">Website</a>
                 </Card.Body>
                 <Card.Footer>
-                    <Card.Title>Employees</Card.Title>
+                    <Card.Title>Employees:</Card.Title>
                     {employeeList}
                 </Card.Footer>
             </Card>

@@ -26,7 +26,7 @@ function App() {
     fetch('/companies')
     .then(r => r.json())
     .then(data => setCompanies(data))
-}, [])
+  }, [])
 
   function login(user) {
       setCurrentUser(user)

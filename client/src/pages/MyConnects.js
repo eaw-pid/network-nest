@@ -22,13 +22,6 @@ function MyConnects() {
             setUserInfo(data)
             setConnectList(data.connections)})
     }, [])
-
-
-
-    // console.log(userInfo)
-    // const connections = userInfo.connections
-    // setConnectList(connections)
-
     
     
     function handleClick() {
@@ -43,8 +36,8 @@ function MyConnects() {
     return (
         
       
-            <div>
-                <h1 className="connection-header">My Connections</h1>
+            <div className="page-body">
+                <h1 className="page-header">My Connections</h1>
                 {!clicked ?
                 <div className="add-connection-button-container">
 
@@ -55,8 +48,8 @@ function MyConnects() {
                 {clicked ? <AddConnectForm className="add-connect-button" clicked={clicked} setIsClicked={setIsClicked}/> : null}
                 <br/>
                 <div className="connect-table">
-                <table className="table table-bordered">
-                    <thead>
+                <table className="table table-bordered" >
+                    <thead id="table-header">
                     <tr>
                         <th scope="col">Name</th>
                         <th scope="col">Company</th>

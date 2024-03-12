@@ -44,7 +44,7 @@ label {
   color: rgb(34, 34, 34);
 }
 
-.connection-header {
+.page-header {
   text-align: center;
   margin-top: 2em;
   padding-bottom: 2%
@@ -62,11 +62,18 @@ label {
 }
 
 .add-connection-button-container {
-  display: flex;
-  justify-content: flex-end;
+  /* display: flex;
+  justify-content: flex-end; */
+  padding-left: 12%;
+  padding-right: 12%;
+  justify-content: right;
 }
 
 .add-connection-container {
   text-align: center;
 }
 
+#table-header {
+  text-align: center;
+  background-color: skyblue;
+}
