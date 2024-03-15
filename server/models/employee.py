@@ -15,8 +15,8 @@ class Employee(db.Model, SerializerMixin):
                     #    '-company.address',
                     #    '-company.website_url',
                        '-company',
-                       '-connections',
-                       '-company.employees.connections',
+                    #    '-connections',
+                    #    '-company.employees.connections',
                        '-users',)
 ##set contacted to False for default?
     id = db.Column(db.Integer, primary_key=True)

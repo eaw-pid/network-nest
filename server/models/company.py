@@ -10,9 +10,9 @@ class Company(db.Model, SerializerMixin):
     __tablename__ = "companies"
 
     serialize_rules = ('-employees.company', 
-                       '-employees.company_id', 
-                       '-employees.connections',
-                       '-employees.website',
+                    #    '-employees.company_id', 
+                    #    '-employees.connections',
+                    #    '-employees.website',
                        )
 
     id = db.Column(db.Integer, primary_key=True)

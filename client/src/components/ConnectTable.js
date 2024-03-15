@@ -32,7 +32,9 @@ function ConnectTable({connect, handleDeleteConnection}) {
             <tr key={connect.id}>
                 <td>{connect.employee.name}</td>
                 <td>{connect.employee.company.name}</td>
-                <td>{connect.employee.email}</td>
+                <td>Email: {connect.employee.email} 
+                <br/>
+                Website: <a href={connect.employee.website}>{connect.employee.website}</a></td>
                 <td>{fulldate}</td>
                 <td>{connect.action}</td>
                 <td>{connect.notes}</td>

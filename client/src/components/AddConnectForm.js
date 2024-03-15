@@ -130,7 +130,7 @@ function handleSubmitThree(values) {
         body: JSON.stringify(newConnection)
     })
     .then(res => res.json())
-    .then(navigate('/my-connections'))
+    .then(navigate('/'))
     
 }
 
@@ -140,8 +140,8 @@ function handleSubmitThree(values) {
 
 
     return (
-        <div>
-            <div className="add-connection-container">
+        <div className="add-connection-container">
+            <div className="add-connection-form">
             <h3>Step 1: Select Company</h3>
             <ToggleButtonGroup type="radio" value={value} onChange={(val) => setValue(val)} name="toggleGroup">
                 <ToggleButton id="tbg-btn-1" value={1}>
@@ -155,7 +155,7 @@ function handleSubmitThree(values) {
             <div> 
             <h4>Choose Existing Company</h4>
             <Form onSubmit={handleExistingSubmit}>
-                <div className="form-group col-md-4">
+                <div >
                 <select className="dropdown" id="inputState" onChange={handleChange}>
                     <option value="default"></option>
                     {companies.map((company) => (
@@ -168,7 +168,7 @@ function handleSubmitThree(values) {
             
             {(value === 2) ?
                  <Form onSubmit={formik1.handleSubmit} >
-                 <div>
+                 <div className="add-connection-form">
                     <h4>Or Add New Company</h4>
                     <label>Company Name</label>
                     <input
@@ -201,10 +201,10 @@ function handleSubmitThree(values) {
             
             {selectCompany ? 
             
-            <div>
+            <div className="add-connection-form">
                 <h3>Step 2: Add Employee</h3>
                 <form onSubmit={formik2.handleSubmit}>
-                    <div className="form-group col-md-4">
+                    <div>
                         <label>Contact Name</label>
                         <input 
                         type="text"
@@ -218,6 +218,7 @@ function handleSubmitThree(values) {
                         placeholder='Email'
                         value={formik2.values.email}
                         onChange={formik2.handleChange}/>
+                        <br/>
                         <label>Website</label>
                         <input 
                         name="website" 
@@ -229,8 +230,9 @@ function handleSubmitThree(values) {
                     </div>
                 </form>
             </div> : null }
+
             {selectEmployee ? 
-            <div>
+            <div className="add-connection-form">
                 <h3>Step 3: Add Connection</h3>
                 <form onSubmit={formik3.handleSubmit}>
                     <label>Type of Contact:</label>
@@ -240,8 +242,10 @@ function handleSubmitThree(values) {
                         <option  value="Email">Email</option>
                         <option  value="LinkedIn Message">LinkedIn Message</option>
                     </select>
+                    <br/>
                     <label>Notes</label>
                     <input
+                        className="form-control input-lg"
                         type="text"
                         name="notes"
                         placeholder="Add Details"

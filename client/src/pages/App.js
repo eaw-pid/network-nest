@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import NavBar from "./NavBar"
 import Login from "./Login";
 import Signup from "./Signup"
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -13,6 +14,8 @@ function App() {
   const [currentUser, setCurrentUser] = useState(null)
   const [userInfo, setUserInfo] = useState({})
   const [companies, setCompanies] = useState([])
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     fetch("/checksession").then((r) => {
@@ -31,6 +34,7 @@ function App() {
   function login(user) {
       setCurrentUser(user)
       setLoggedIn(true)
+      navigate('/')
     }
     
   function logout() {
@@ -41,6 +45,7 @@ function App() {
         if (r.ok) {
           setCurrentUser(null)
           setLoggedIn(false)
+          navigate('/')
         }
       })
     }

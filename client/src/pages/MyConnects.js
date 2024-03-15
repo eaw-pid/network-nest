@@ -53,7 +53,7 @@ function MyConnects() {
                     <tr>
                         <th scope="col">Name</th>
                         <th scope="col">Company</th>
-                        <th scope="col">Email</th>
+                        <th scope="col">Contact</th>
                         <th scope="col">Date Contacted</th>
                         <th scope="col">Connection Type</th>
                         <th scope="col">Notes</th>

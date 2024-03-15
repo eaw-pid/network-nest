@@ -11,6 +11,7 @@ function CompanyCard({company}) {
 
 
     const {employees} = company
+    
 
     
     
@@ -20,7 +21,7 @@ function CompanyCard({company}) {
     return (
         <div>
         
-            <Col lg={6}>
+            <Col lg={5}>
                    
             {/* <div className="holder"> */}
             <Card style={{ width: '35rem' }}>
