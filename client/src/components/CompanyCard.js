@@ -23,7 +23,7 @@ function CompanyCard({company}) {
         
             <Col lg={5}>
                    
-            {/* <div className="holder"> */}
+           
             <Card style={{ width: '35rem' }}>
             <Card.Img  src="https://t3.ftcdn.net/jpg/02/55/86/12/360_F_255861239_viu6hRNcURzeKUoyPJBFOyTu1fA8aJtM.jpg" alt="Card image cap"/>
                 <Card.Body>
@@ -36,7 +36,7 @@ function CompanyCard({company}) {
                     {employeeList}
                 </Card.Footer>
             </Card>
-            {/* </div> */}
+           
             <br/>
             <br/>
             </Col>
