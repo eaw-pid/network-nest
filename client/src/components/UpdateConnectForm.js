@@ -1,20 +1,28 @@
-import { setNestedObjectValues } from "formik";
+
 import React, {useState} from "react";
 import { useNavigate } from "react-router-dom";
 
-function UpdateConnectForm({connect}) {
+function UpdateConnectForm({connect, handleUpdateItem, setUpdatedClicked}) {
 
     const [action, setAction] = useState("")
     const [notes, setNotes] = useState("")
+   
     const navigate = useNavigate()
+    console.log(connect.id)
+    //this is consoling the connect object
 
     function handleSubmit(e){
         e.preventDefault()
-
+        console.log(connect)
+        //this is consoling as [object object]
         const newData = {
             action: action,
             notes: notes
         }
+        
+        //this is consoling as [object object]
+        console.log(newData)
+        console.log(connect.id)
         fetch(`connections/${connect.id}`, {
             method: "PATCH",
             headers: {
@@ -23,11 +31,16 @@ function UpdateConnectForm({connect}) {
             body: JSON.stringify(newData)
         })
         .then(res => res.json())
-        .then(navigate('/my-connections'))
-
+        .then((updatedItem) => {
+            console.log(updatedItem)
+            handleUpdateItem(connect.id, updatedItem)
+            setUpdatedClicked(false)
+            navigate('/my-connections')
+        })
+        
     }
     
-    console.log(connect)
+    
     return (
         <div>
             <form onSubmit={handleSubmit}>

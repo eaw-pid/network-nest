@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import {Form, ToggleButton, ToggleButtonGroup} from 'react-bootstrap'
 
-function AddConnectForm({clicked, setIsClicked}) {
+function AddConnectForm({clicked, setIsClicked, onAddConnect}) {
 
   const {companies, onAddCompany, currentUser} = useOutletContext()
   const [company, setCompany] = useState({})
@@ -88,7 +88,7 @@ function AddConnectForm({clicked, setIsClicked}) {
   function handleSubmitTwo(values) {
     
     const newEmployee = {...values, contacted: 1, company_id:company.id}
-    console.log(newEmployee)
+    
     fetch('/employees', {
         method: "POST",
         headers: {
@@ -130,7 +130,11 @@ function handleSubmitThree(values) {
         body: JSON.stringify(newConnection)
     })
     .then(res => res.json())
-    .then(navigate('/'))
+    .then((connectionData) => {
+        onAddConnect(connectionData)
+        setIsClicked(false)
+        navigate('/my-connections')
+    })
     
 }
 

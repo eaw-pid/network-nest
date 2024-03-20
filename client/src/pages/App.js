@@ -14,6 +14,9 @@ function App() {
   const [currentUser, setCurrentUser] = useState(null)
   const [userInfo, setUserInfo] = useState({})
   const [companies, setCompanies] = useState([])
+  const [clicked, setIsClicked] = useState(false)
+  const [connectList, setConnectList] =  useState([])
+
 
   const navigate = useNavigate()
 
@@ -61,7 +64,19 @@ function App() {
       <NavBar currentUser={currentUser} setCurrentUser={setCurrentUser} logout={logout}/>
     </header>
       <Outlet 
-        context={{login, loggedIn, setUserInfo, userInfo, currentUser, companies, setCompanies, onAddCompany}}/>
+        context={{login, 
+        loggedIn, 
+        setUserInfo, 
+        userInfo, 
+        currentUser, 
+        companies, 
+        setCompanies, 
+        onAddCompany,
+        clicked,
+        setIsClicked,
+        setLoggedIn,
+        connectList,
+        setConnectList}}/>
   
     </>
   )

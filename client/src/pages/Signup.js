@@ -10,7 +10,7 @@ function Signup() {
     const [errors, setErrors] = useState([])
 
     const navigate = useNavigate()
-    const {login} = useOutletContext()
+    const {login, clicked, setLoggedIn} = useOutletContext()
     
     function handleSubmit(user) {
         login(user)
@@ -51,9 +51,8 @@ function Signup() {
                 if(r.ok) {
                     r.json()
                     .then
-                    (user => {
-                        handleSubmit(user)
-                        navigate('/my-connections')})
+                    (user => handleSubmit(user))
+                    navigate('/')
                    
                 } else {
                     r.json().then(err => setErrors(err.errors))

@@ -10,8 +10,10 @@ function ErrorPage() {
         <header>
             <NavBar />
         </header>
-        <main>
-            <h1>Whoops! Something went wrong!</h1>
+        <main className='landing-homepage'>
+            <div className='homepage-words'>
+                <h1>Whoops! Something went wrong!</h1>
+            </div>
         </main>
         </>
     );

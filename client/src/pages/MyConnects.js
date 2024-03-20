@@ -8,9 +8,9 @@ import Button from 'react-bootstrap'
 
 function MyConnects() {
 
-    const {userInfo, setUserInfo, currentUser} = useOutletContext()
-    const [clicked, setIsClicked] = useState(false)
-    const [connectList, setConnectList] =  useState([])
+    const {userInfo, setUserInfo, currentUser, clicked, setIsClicked, connectList, setConnectList} = useOutletContext()
+    // const [clicked, setIsClicked] = useState(false)
+    
    
 
     
@@ -29,11 +29,28 @@ function MyConnects() {
     }
    
     function handleDeleteConnection(id) {
+        console.log(id)
         const updatedConnections = connectList.filter((connect) => connect.id !== id)
         setConnectList(updatedConnections)
     }
+
+    function onAddConnect(newConnection) {
+        setConnectList([...connectList, newConnection])
+    }
     
-    return (
+    // function handleUpdateItem(id, item) {
+    //     console.log(id, item)
+    //     // console.log(connectList)
+    //     const updatedConnectList = connectList.map((connect) => {
+    //         if (connect.id === id) {
+    //             return item
+    //         } else {
+    //             return connect
+    //         }
+    //     });
+    //     setConnectList(updatedConnectList)}
+    
+        return (
         
       
             <div className="page-body">
@@ -45,7 +62,7 @@ function MyConnects() {
                 </div>
                 : null }
                 
-                {clicked ? <AddConnectForm className="add-connect-button" clicked={clicked} setIsClicked={setIsClicked}/> : null}
+                {clicked ? <AddConnectForm className="add-connect-button" clicked={clicked} setIsClicked={setIsClicked} onAddConnect={onAddConnect}/> : null}
                 <br/>
                 <div className="connect-table">
                 <table className="table table-bordered" >
@@ -64,7 +81,13 @@ function MyConnects() {
                     
                 {connectList && connectList.map((connect) => (
 
-                    <ConnectTable key={connect.id} connect={connect} handleDeleteConnection={handleDeleteConnection}/>
+                    <ConnectTable key={connect.id} 
+                        connect={connect} 
+                        handleDeleteConnection={handleDeleteConnection} 
+                        setConnectList={setConnectList}
+                        connectList={connectList}
+                        // TO DOhandleUpdateItem={handleUpdateItem}
+                        />
                 ))}
                    
                 </tbody>

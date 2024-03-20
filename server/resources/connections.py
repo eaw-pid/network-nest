@@ -49,14 +49,17 @@ class ConnectionsById(Resource):
     def patch(self, id):
         connection = Connection.query.filter_by(id=id).first()
         if connection:
-           form_data = request.get_json()
-           for attr in form_data:
-               setattr(connection, attr, form_data.get(attr))
+    
+            form_data = request.get_json()
+            for attr in form_data:
+                setattr(connection, attr, form_data.get(attr))
 
-           db.session.add(connection)
-           db.session.commit()
+            db.session.add(connection)
+            db.session.commit()
 
-           return {"message": "Connection updated successfully"}, 200
+            return connection.to_dict(), 200
+        else:
+            return {"message": "Connection not found"}, 200
     
     def delete(self, id):
         connection = Connection.query.filter_by(id=id).first()

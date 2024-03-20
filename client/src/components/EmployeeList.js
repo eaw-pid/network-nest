@@ -13,11 +13,11 @@ function EmployeeList({employee}) {
     }
 
     return (
-        <div key={employee.id} style={{border: "1px"}}>
+        <div key={employee.id} className="employee-card">
 
-        <Card.Text>Name: {employee.name} </Card.Text>
-        <Card.Text>Email: {employee.email}</Card.Text>
-        <Card.Text>Number of Connections Made: {employeeConnects}</Card.Text>
+        <Card.Text><strong style={{ fontWeight: "bold" }}>Name:</strong> {employee.name} </Card.Text>
+        <Card.Text><strong style={{ fontWeight: "bold" }}>Email: </strong>{employee.email}</Card.Text>
+        <Card.Text><strong style={{ fontWeight: "bold" }}>Number of Connections Made:</strong> {employeeConnects}</Card.Text>
         {/* {!employee.contacted ? 
         <button className="btn btn-outline-primary btn-sm" onClick={handleClick}>Add to "My Connections"</button>
         : null} */}
