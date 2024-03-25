@@ -1,34 +1,28 @@
 
-import React, {useState} from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
+import * as yup from "yup";
 
 function UpdateConnectForm({connect, handleUpdateItem, setUpdatedClicked}) {
 
-    const [action, setAction] = useState("")
-    const [notes, setNotes] = useState("")
-   
     const navigate = useNavigate()
-    console.log(connect.id)
-    //this is consoling the connect object
+    
+    const formSchema = yup.object().shape({
+        action: yup.string().required("Must select action"),
+        notes: yup.string().required("*required")
+    })
 
-    function handleSubmit(e){
-        e.preventDefault()
-        console.log(connect)
-        //this is consoling as [object object]
-        const newData = {
-            action: action,
-            notes: notes
-        }
-        
-        //this is consoling as [object object]
-        console.log(newData)
+    function handleSubmit(values){
+ 
+        console.log(values)
         console.log(connect.id)
         fetch(`connections/${connect.id}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(newData)
+            body: JSON.stringify(values)
         })
         .then(res => res.json())
         .then((updatedItem) => {
@@ -40,24 +34,38 @@ function UpdateConnectForm({connect, handleUpdateItem, setUpdatedClicked}) {
         
     }
     
+    const formik = useFormik({
+        initialValues: {
+            action: "",
+            notes: ""
+        },
+        validationSchema: formSchema,
+        onSubmit: (values) => handleSubmit(values)
+    })
+
+    function displayErrors(error) {
+        return error ? <p style={{color: "red"}}>{error}</p> : null
+    }
     
     return (
         <div>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={formik.handleSubmit}>
                 <label>Type of Contact:</label>
-                <select name ="action" value={action} onChange={(e) => setAction(e.target.value)}>
+                <select name ="action" value={formik.values.action} onChange={formik.handleChange} >
                         <option>Select an Option</option>
                         <option  value="Phone Call">Phone Call</option>
                         <option  value="Email">Email</option>
                         <option  value="LinkedIn Message">LinkedIn Message</option>
                 </select>
+                {displayErrors(formik.errors.action)}
                 <label>Notes:</label>
                 <input 
                 className="form-control input-lg"
                 type="text" 
                 name="notes" 
-                value={notes} 
-                onChange={(e) => setNotes(e.target.value)}></input>
+                value={formik.values.notes} 
+                onChange={formik.handleChange}></input>
+                {displayErrors(formik.errors.action)}
                 <button type="submit">Update</button>
             </form>
         </div>
@@ -65,3 +73,7 @@ function UpdateConnectForm({connect, handleUpdateItem, setUpdatedClicked}) {
 }
 
 export default UpdateConnectForm
+
+
+// const [action, setAction] = useState("")
+// const [notes, setNotes] = useState("")

@@ -17,7 +17,7 @@ function AddConnectForm({clicked, setIsClicked, onAddConnect}) {
   
   const navigate = useNavigate()
 
-
+  
 
 //SELECT EMPLOYEE/ADD EMPLOYEE
   const formOneSchema = yup.object().shape({
@@ -216,12 +216,14 @@ function handleSubmitThree(values) {
                         placeholder="Contact Name"
                         value={formik2.values.name}
                         onChange={formik2.handleChange}/>
+                        {displayErrors(formik2.errors.name)}
                         <label>Contact Email</label>
                         <input 
                         name="email" 
                         placeholder='Email'
                         value={formik2.values.email}
                         onChange={formik2.handleChange}/>
+                        {displayErrors(formik2.errors.email)}
                         <br/>
                         <label>Website</label>
                         <input 
@@ -229,7 +231,7 @@ function handleSubmitThree(values) {
                         placeholder="Website"
                         value={formik2.values.website}
                         onChange={formik2.handleChange}/>
-    
+                        {displayErrors(formik2.errors.website)}
                         <button type="submit">Submit</button>
                     </div>
                 </form>
@@ -246,6 +248,7 @@ function handleSubmitThree(values) {
                         <option  value="Email">Email</option>
                         <option  value="LinkedIn Message">LinkedIn Message</option>
                     </select>
+                    {displayErrors(formik3.errors.action)}
                     <br/>
                     <label>Notes</label>
                     <input
@@ -255,6 +258,7 @@ function handleSubmitThree(values) {
                         placeholder="Add Details"
                         value={formik3.values.notes}
                         onChange={formik3.handleChange}/>
+                        {displayErrors(formik3.errors.notes)}
                     <button type="submit">Add Connection!</button>
                 </form>
             </div>

@@ -11,9 +11,12 @@ function CompanyCard({company}) {
 
 
     const {employees} = company
+    const [clicked, setIsClicked] = useState(false)
     
 
-    
+    function handleClick() {
+        setIsClicked((clicked) => !clicked)
+    }
     
     const employeeList = employees.map((employee) => (
        <EmployeeList key={employee.id} employee={employee}/>))
@@ -32,8 +35,11 @@ function CompanyCard({company}) {
                     <a href={company.website_url} className="btn btn-primary">Website</a>
                 </Card.Body>
                 <Card.Footer>
-                    <Card.Title>Employees:</Card.Title>
-                    {employeeList}
+                    <Card.Title onClick={handleClick}className="btn btn-primary">Employees:</Card.Title>
+                    {clicked ? 
+                    
+                    employeeList
+                    : null}
                 </Card.Footer>
             </Card>
            

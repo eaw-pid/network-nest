@@ -25,7 +25,6 @@ function NavBar({currentUser, logout}) {
                 {!currentUser ? (
                     <>
                 <Nav className="me-auto">
-                    <Nav.Link as={NavLink} to="/" className={styles.navLink}>Home</Nav.Link>  
                     <Nav.Link as={NavLink} to="/login" className={styles.navLink}>Login</Nav.Link>  
                 </Nav> 
                 <Button as={NavLink} to="/signup" bsstyle="primary">Signup</Button>
