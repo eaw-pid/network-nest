@@ -11,11 +11,11 @@ function CompanyCard({company}) {
 
 
     const {employees} = company
-    const [clicked, setIsClicked] = useState(false)
+    const [empClicked, setEmpClicked] = useState(false)
     
 
     function handleClick() {
-        setIsClicked((clicked) => !clicked)
+        setEmpClicked((empClicked) => !empClicked)
     }
     
     const employeeList = employees.map((employee) => (
@@ -36,7 +36,7 @@ function CompanyCard({company}) {
                 </Card.Body>
                 <Card.Footer>
                     <Card.Title onClick={handleClick}className="btn btn-primary">Employees:</Card.Title>
-                    {clicked ? 
+                    {empClicked ? 
                     
                     employeeList
                     : null}

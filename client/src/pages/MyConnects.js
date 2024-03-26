@@ -38,17 +38,6 @@ function MyConnects() {
         setConnectList([...connectList, newConnection])
     }
     
-    // function handleUpdateItem(id, item) {
-    //     console.log(id, item)
-    //     // console.log(connectList)
-    //     const updatedConnectList = connectList.map((connect) => {
-    //         if (connect.id === id) {
-    //             return item
-    //         } else {
-    //             return connect
-    //         }
-    //     });
-    //     setConnectList(updatedConnectList)}
     
         return (
         

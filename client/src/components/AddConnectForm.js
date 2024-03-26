@@ -11,12 +11,15 @@ function AddConnectForm({clicked, setIsClicked, onAddConnect}) {
   const [employee, setEmployee] = useState({})
   const [selectCompany, setSelectCompany] = useState(false)
   const [selectEmployee, setSelectEmployee] = useState(false)
-  const [value, setValue] = useState(null);
+  const [companyValue, setCompanyValue] = useState(null);
+  const [employeeValue, setEmployeeValue] = useState(null)
+  const [employees, setEmployees] = useState({})
  
   
   
   const navigate = useNavigate()
 
+  
   
 
 //SELECT EMPLOYEE/ADD EMPLOYEE
@@ -41,6 +44,7 @@ function AddConnectForm({clicked, setIsClicked, onAddConnect}) {
                 .then(data => {
                     onAddCompany(data)
                     setCompany(data)
+                    setEmployees(company.employees)
                     setSelectCompany((selectCompany) => !selectCompany)
                 })
             }
@@ -59,6 +63,7 @@ function AddConnectForm({clicked, setIsClicked, onAddConnect}) {
   function handleChange(e) {
     const selectedCompany= companies.find((company) => company.name == e.target.value)
     setCompany(selectedCompany)
+    setEmployees(selectedCompany.employees)
   }
 
 
@@ -68,6 +73,18 @@ function AddConnectForm({clicked, setIsClicked, onAddConnect}) {
   }
 
   //ADD EMPLOYEE
+
+  function handleEmployeeChange(e) {
+    const selectedEmployee = employees.find((employee) => employee.name == e.target.value)
+    setEmployee(selectedEmployee)
+    
+  }
+  function handleExistingEmpSubmit(e) {
+    e.preventDefault()
+    setSelectEmployee((selectEmployee) => !selectEmployee)
+  }
+
+
   const formTwoSchema = yup.object().shape({
     name: yup.string().required("Must enter company name"),
     email: yup.string().required("*required"),
@@ -105,7 +122,8 @@ function AddConnectForm({clicked, setIsClicked, onAddConnect}) {
 //ADD CONNECTION
 
 const formThreeSchema = yup.object().shape({
-
+action: yup.string().required("Must select action"),
+        notes: yup.string().required("*required")
 })
 const formik3 = useFormik({
     initialValues: {
@@ -147,15 +165,15 @@ function handleSubmitThree(values) {
         <div className="add-connection-container">
             <div className="add-connection-form">
             <h3>Step 1: Select Company</h3>
-            <ToggleButtonGroup type="radio" value={value} onChange={(val) => setValue(val)} name="toggleGroup">
-                <ToggleButton id="tbg-btn-1" value={1}>
+            <ToggleButtonGroup type="radio" value={companyValue} onChange={(val) => setCompanyValue(val)} name="companyToggleGroup">
+                <ToggleButton id="comp-tbg-btn-1" value={1}>
                     Choose Existing Company
                 </ToggleButton>
-                <ToggleButton id="tbg-btn-2" value={2}>
+                <ToggleButton id="comp-tbg-btn-2" value={2}>
                     Add New Company
                 </ToggleButton>
             </ToggleButtonGroup>
-            {(value === 1) ?
+            {(companyValue === 1) ?
             <div> 
             <h4>Choose Existing Company</h4>
             <Form onSubmit={handleExistingSubmit}>
@@ -170,7 +188,7 @@ function handleSubmitThree(values) {
                  </div>
             </Form> </div>: null}
             
-            {(value === 2) ?
+            {(companyValue === 2) ?
                  <Form onSubmit={formik1.handleSubmit} >
                  <div className="add-connection-form">
                     <h4>Or Add New Company</h4>
@@ -207,6 +225,29 @@ function handleSubmitThree(values) {
             
             <div className="add-connection-form">
                 <h3>Step 2: Add Employee</h3>
+                    <ToggleButtonGroup type="radio" value={employeeValue} onChange={(val) => setEmployeeValue(val)} name="employeeToggleGroup">
+                        <ToggleButton id="emp-tbg-btn-1" value={3}>
+                            Choose from Existing Employee List
+                        </ToggleButton>
+                        <ToggleButton id="emp-tbg-btn-2" value={4}>
+                            Add New Employee
+                        </ToggleButton>
+                    </ToggleButtonGroup>
+            {(employeeValue === 3) ?
+            <div> 
+            <h4>Choose Existing Employee</h4>
+            <Form onSubmit={handleExistingEmpSubmit}>
+                <div >
+                <select className="dropdown" id="inputState" onChange={handleEmployeeChange}>
+                    <option value="default"></option>
+                    {employees.map((employee) => (
+                        <option key={employee.id} value={employee.name}>{employee.name}</option>
+                    ))}
+                 </select>
+                 <button>Next</button>
+                 </div>
+            </Form> </div> : null}
+            {(employeeValue === 4) ?
                 <form onSubmit={formik2.handleSubmit}>
                     <div>
                         <label>Contact Name</label>
@@ -234,7 +275,7 @@ function handleSubmitThree(values) {
                         {displayErrors(formik2.errors.website)}
                         <button type="submit">Submit</button>
                     </div>
-                </form>
+                </form> : null}
             </div> : null }
 
             {selectEmployee ? 

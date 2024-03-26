@@ -16,7 +16,7 @@ function UpdateConnectForm({connect, handleUpdateItem, setUpdatedClicked}) {
     function handleSubmit(values){
  
         console.log(values)
-        console.log(connect.id)
+       
         fetch(`connections/${connect.id}`, {
             method: "PATCH",
             headers: {
