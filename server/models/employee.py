@@ -29,7 +29,7 @@ class Employee(db.Model, SerializerMixin):
 
     #relationship mapping to review the related company:
     company = db.relationship('Company', back_populates="employees")
-    connections = db.relationship('Connection', back_populates='employee')
+    connections = db.relationship('Connection', cascade="all,delete", back_populates='employee')
 
     users = association_proxy('connections', 'user',
                                   creator=lambda user_obj: Connection(user=user_obj))

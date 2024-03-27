@@ -21,7 +21,8 @@ class Company(db.Model, SerializerMixin):
     website_url = db.Column(db.String, nullable=False)
 
     #relationship mapping to view employees in the company
-    employees = db.relationship('Employee', back_populates="company")
+    employees = db.relationship('Employee', cascade="all,delete", back_populates="company")
+    
     
     def __repr__(self):
         return f'<{self.name}>'

@@ -71,8 +71,8 @@ class ConnectionsById(Resource):
             db.session.delete(connection)
             db.session.commit()
         
-            return {"message": "User deleted successfully"}, 200
-        return {"message": "User not found"}, 404
+            return {"message": "Connection deleted successfully"}, 200
+        return {"message": "Connection not found"}, 404
         
 
 api.add_resource(ConnectionsResource, '/connections', endpoint="connections")

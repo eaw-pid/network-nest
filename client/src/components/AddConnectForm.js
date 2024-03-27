@@ -14,6 +14,7 @@ function AddConnectForm({clicked, setIsClicked, onAddConnect}) {
   const [companyValue, setCompanyValue] = useState(null);
   const [employeeValue, setEmployeeValue] = useState(null)
   const [employees, setEmployees] = useState({})
+  const [newCompany, setNewCompany] = useState(false)
  
   
   
@@ -46,6 +47,8 @@ function AddConnectForm({clicked, setIsClicked, onAddConnect}) {
                     setCompany(data)
                     setEmployees(company.employees)
                     setSelectCompany((selectCompany) => !selectCompany)
+                    setNewCompany(true)
+                    setEmployeeValue(4)
                 })
             }
         })
@@ -165,6 +168,7 @@ function handleSubmitThree(values) {
         <div className="add-connection-container">
             <div className="add-connection-form">
             <h3>Step 1: Select Company</h3>
+            
             <ToggleButtonGroup type="radio" value={companyValue} onChange={(val) => setCompanyValue(val)} name="companyToggleGroup">
                 <ToggleButton id="comp-tbg-btn-1" value={1}>
                     Choose Existing Company
@@ -173,6 +177,7 @@ function handleSubmitThree(values) {
                     Add New Company
                 </ToggleButton>
             </ToggleButtonGroup>
+            
             {(companyValue === 1) ?
             <div> 
             <h4>Choose Existing Company</h4>
@@ -225,6 +230,7 @@ function handleSubmitThree(values) {
             
             <div className="add-connection-form">
                 <h3>Step 2: Add Employee</h3>
+                {!newCompany ?
                     <ToggleButtonGroup type="radio" value={employeeValue} onChange={(val) => setEmployeeValue(val)} name="employeeToggleGroup">
                         <ToggleButton id="emp-tbg-btn-1" value={3}>
                             Choose from Existing Employee List
@@ -232,7 +238,7 @@ function handleSubmitThree(values) {
                         <ToggleButton id="emp-tbg-btn-2" value={4}>
                             Add New Employee
                         </ToggleButton>
-                    </ToggleButtonGroup>
+                    </ToggleButtonGroup> : null}
             {(employeeValue === 3) ?
             <div> 
             <h4>Choose Existing Employee</h4>
@@ -313,27 +319,3 @@ export default AddConnectForm
 
 
 
-
-//   function handleNewSubmit(e) {
-//     e.preventDefault()
-
-//     const newCompany = {
-//         name: companyName,
-//         address: address,
-//         website_url: website,
-//     }
-//     fetch('/companies', {
-//         method: "POST",
-//         headers: {
-//             "Content-Type": "application/json"
-//         },
-//         body: JSON.stringify(newCompany)
-//     })
-//     .then(res => res.json())
-//     .then(data => {
-//         onAddCompany(data)
-//         setCompany(data)})
-//   }
-
-//   setSelectedCompany((selectCompany) => !selectCompany)
-//   console.log(company)
