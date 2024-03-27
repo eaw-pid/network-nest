@@ -66,10 +66,8 @@ function MyConnects() {
                         <th scope="col">Status</th>
                     </tr> 
                 </thead>
-                <tbody>
-                    
                 {connectList && connectList.map((connect) => (
-
+                    <tbody>
                     <ConnectTable key={connect.id} 
                         connect={connect} 
                         handleDeleteConnection={handleDeleteConnection} 
@@ -77,9 +75,9 @@ function MyConnects() {
                         connectList={connectList}
                         // TO DOhandleUpdateItem={handleUpdateItem}
                         />
+                </tbody>
                 ))}
                    
-                </tbody>
                 </table>
                 </div>
             </div>
