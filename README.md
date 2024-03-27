@@ -1,7 +1,7 @@
 
 # NetworkNest - Full Stack Application
 
-![NetworkNest](client/src/images/logo-2.png)
+![NetworkNest](client/src/images/logo-2.png){width="50%"}
 
 ## Getting Started
 
