@@ -22,3 +22,7 @@ On the 'Companies' page, users can see all of the employees currently in the dat
 
 ![Companies](client/src/images/companies.png)
 
+## Demo
+
+[![Demo Video](https://markdown-videos-api.jorgenkh.no/url?url=https%3A%2F%2Fyoutu.be%2FmzjhEHl4t4w)](https://youtu.be/mzjhEHl4t4w)
+
