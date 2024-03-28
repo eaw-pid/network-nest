@@ -63,7 +63,7 @@ class ConnectionsById(Resource):
             except ValueError as err:
                 return {"error": str(err)}, 422
         else:
-            return {"message": "Connection not found"}, 200
+            return {"message": "Connection not found"}, 400
     
     def delete(self, id):
         connection = Connection.query.filter_by(id=id).first()

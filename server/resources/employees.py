@@ -54,12 +54,19 @@ class EmployeeById(Resource):
     def patch(self, id):
         employee = Employee.query.filter_by(id=id).first()
         if employee:
-           form_data = request.get_json()
-           for attr in form_data:
-               setattr(employee, attr, form_data.get(attr))
+           try: 
+                form_data = request.get_json()
+                for attr in form_data:
+                    setattr(employee, attr, form_data.get(attr))
 
-           db.session.add(employee)
-           db.session.commit()
+                db.session.add(employee)
+                db.session.commit()
+
+                return employee.to_dict(), 200
+           except ValueError as err:
+               return {"error": str(err)}, 422
+        else:
+            return {"message": "Employee not found"}, 400
     
     def delete(self, id):
         employee = Employee.query.filter_by(id=id).first()

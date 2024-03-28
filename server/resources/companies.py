@@ -51,19 +51,25 @@ class CompanyById(Resource):
     def patch(self, id):
         company = Company.query.filter_by(id=id).first()
         if company:
-           form_data = request.get_json()
-           for attr in form_data:
-               setattr(company, attr, form_data.get(attr))
+           try:
+                form_data = request.get_json()
+                for attr in form_data:
+                    setattr(company, attr, form_data.get(attr))
 
-           db.session.add(company)
-           db.session.commit()
-    
+                db.session.add(company)
+                db.session.commit()
+
+                return company.to_dict(), 200
+           except ValueError as err:
+                return {"error": str(err)}, 422
+        else:
+            return {"message": "Connection not found"}, 200
+        
     def delete(self, id):
         company = Company.query.filter_by(id=id).first()
         if company:
             db.session.delete(company)
             db.session.commit()
-        
             return {"message": "Company deleted successfully"}, 200
         
         return {"message": "Company not found"}, 404
